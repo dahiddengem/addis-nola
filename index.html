@@ -65,12 +65,14 @@ button{font:inherit}
 .logo{height:46px;width:auto}
 
 /* HERO */
-#hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:var(--ink)}
+#hero{min-height:min(104vh,980px);min-height:min(104svh,980px);display:flex;align-items:flex-end;position:relative;overflow:hidden;background:var(--ink)}
 #hero .bg{position:absolute;inset:-6% 0;background:center/cover no-repeat;will-change:transform}
 #hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,3,.55) 0%,rgba(3,3,3,.15) 40%,rgba(3,3,3,.92) 100%)}
-#hero .in{position:relative;z-index:2;padding-bottom:56px;width:100%}
+#hero>.wrap{position:relative;z-index:2;padding-top:112px;padding-bottom:56px;width:100%}
 #hero h1{font-size:clamp(3.4rem,13vw,10.5rem)}
-#hero .sub{font-size:clamp(1.5rem,4vw,2.6rem);margin-top:.6rem}
+#hero .tl{width:fit-content;max-width:100%}
+#hero .sub{font-size:clamp(2.1rem,8vw,4.4rem);line-height:1.05;margin-top:.5rem;text-align:left}
+@media(min-width:800px){#hero .sub{text-align:right}}
 .heroRow{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;justify-content:space-between;margin-top:28px}
 .badge{display:flex;gap:14px;align-items:center}
 .badge img{height:58px;background:#fff;padding:3px}
@@ -85,11 +87,11 @@ button{font:inherit}
 
 /* ORDER SECTION */
 .ogrid{display:grid;gap:12px;grid-template-columns:1fr}@media(min-width:700px){.ogrid{grid-template-columns:repeat(4,1fr)}}
-.oc{display:block;padding:24px;background:var(--ink2);border:1px solid var(--line);text-decoration:none;min-height:140px;transition:border-color .2s;color:inherit;text-align:left;cursor:pointer;width:100%}
+.oc{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:24px;background:var(--ink2);border:1px solid var(--line);text-decoration:none;min-height:140px;transition:border-color .2s;color:inherit;text-align:left;cursor:pointer;width:100%}
 .oc:hover{border-color:var(--accent)}.oc b{font-family:'Archivo';font-stretch:76%;text-transform:uppercase;font-size:1.5rem;display:block}.oc small{color:var(--mute)}
 .feat{display:grid;gap:24px;align-items:center;margin-top:30px}
 @media(min-width:800px){.feat{grid-template-columns:minmax(0,640px) 1fr;gap:44px}}
-.feat .fimg img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.feat .fimg img{width:100%;height:auto;max-height:80vh;object-fit:contain;object-position:left top}
 .feat h3{font-size:clamp(2.2rem,6vw,4rem)}
 .feat p{color:#e8e1d8;margin-top:.6rem;max-width:28rem}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
@@ -178,10 +180,10 @@ footer .row{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;a
 .credit{font-size:.72rem;opacity:.65}
 
 /* CART BAR + DRAWER + MODALS */
-#cartbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;padding:8px 12px;background:rgba(3,3,3,.94);border-top:1px solid var(--line);backdrop-filter:blur(8px)}
+#cartbar{cursor:pointer;position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;padding:8px 12px;background:rgba(3,3,3,.94);border-top:1px solid var(--line);backdrop-filter:blur(8px)}
 body.hasCart #cartbar{display:block}
 #cartbar button{width:100%;max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;min-height:52px;padding:0 20px;background:var(--accent);color:#fff;border:0;font-weight:700;cursor:pointer}
-#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(10px);background:#fff;color:#000;padding:10px 16px;font-size:.88rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:90;max-width:90vw}
+#toast{pointer-events:none;position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(10px);background:#fff;color:#000;padding:10px 16px;font-size:.88rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:90;max-width:90vw}
 #toast.on{opacity:1;transform:translateX(-50%)}
 .shade{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:70}
 .shade.open{display:block}
@@ -250,8 +252,8 @@ body.hasCart #cartbar{display:block}
   <div class="bg" id="heroBg"></div>
   <div class="wrap in">
     <p class="mono hl reveal">Bayou Road · New Orleans</p>
-    <h1 class="disp reveal">Modern<br>Ethiopian</h1>
-    <p class="serif sub reveal">Cuisine <span class="hl">x</span> Culture</p>
+    <div class="tl"><h1 class="disp reveal">Modern<br>Ethiopian</h1>
+    <p class="serif sub reveal">Cuisine <span class="hl">x</span> Culture</p></div>
     <div class="heroRow reveal">
       <div style="display:flex;flex-wrap:wrap;gap:16px">
         <div>
@@ -281,7 +283,7 @@ body.hasCart #cartbar{display:block}
       <button class="oc gem-cut" id="orderHere"><b>Order here</b><small>Pickup or delivery · Demo checkout</small></button>
       <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.ubereats.com/store/addis-nola/WFtr66k8QeOjza79omxwlw"><b>Uber Eats</b><small>Delivery</small></a>
       <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.doordash.com/store/addis-nola-(bayou-road)-new-orleans-789875/2614679/"><b>DoorDash</b><small>Delivery</small></a>
-      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://my.loopz.io/gift-card/ce4ab0f9-84d7-4825-82c3-acb885d3e27f?locale=en-US" style="display:flex;gap:14px;align-items:center"><img alt="Addis NOLA gift card" id="gift" style="width:64px;height:64px;object-fit:contain" loading="lazy" onerror="this.remove()"><span><b>Gift cards</b><small>Share the culture</small></span></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://my.loopz.io/gift-card/ce4ab0f9-84d7-4825-82c3-acb885d3e27f?locale=en-US" style="flex-direction:row;gap:14px"><img alt="Addis NOLA gift card" id="gift" style="width:64px;height:64px;object-fit:contain" loading="lazy" onerror="this.remove()"><span><b>Gift cards</b><small>Share the culture</small></span></a>
     </div>
 
     <div id="plates" style="margin-top:72px">
@@ -412,7 +414,7 @@ body.hasCart #cartbar{display:block}
       <p class="mono chap">VII · Visit</p>
       <h2 class="disp big">Find us on <span class="hl">Bayou</span> Road.</h2>
       <address style="font-style:normal;margin-top:22px;line-height:1.7">2514 Bayou Rd<br>New Orleans, Louisiana 70119</address>
-      <p style="margin-top:8px"><a href="tel:+15043232944">(504) 323-2944</a></p>
+      <p style="margin-top:8px"><a href="tel:+15042185321">(504) 218-5321</a></p>
       <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:14px">
         <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2514+Bayou+Rd+New+Orleans+LA+70119">Google Maps</a><span class="note">Directions</span></div>
         <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Addis+NOLA&address=2514+Bayou+Rd%2C+New+Orleans%2C+LA+70119">Apple Maps</a><span class="note">Directions</span></div>
@@ -579,6 +581,7 @@ function closeAll(){
 function openModal(id){lastFocus=document.activeElement;$('#shade').classList.add('open');$('#'+id).classList.add('open');const b=$('#'+id+' .x');b&&b.focus()}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
 $('#shade').addEventListener('click',closeAll);
+$('#cartbar').addEventListener('click',()=>{if(!$('#drawer').classList.contains('open'))openDrawer()});
 
 /* ---------- CHECKOUT (mock: no payment fields, nothing is sent) ---------- */
 const H=[['Sunday','11 AM–3 PM & 5–10 PM',[[11,15],[17,22]]],['Monday','5–9:30 PM',[[17,21.5]]],['Tuesday','Closed',[]],['Wednesday','5–9:30 PM',[[17,21.5]]],['Thursday','5–9:30 PM',[[17,21.5]]],['Friday','5–10 PM',[[17,22]]],['Saturday','11 AM–3 PM & 5–10 PM',[[11,15],[17,22]]]];
@@ -646,6 +649,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.open){openModal(t.dataset.open);return}
   if(t.hasAttribute('data-close')){closeAll();return}
   if(t.id==='navCart'||t.id==='barBtn'){openDrawer();return}
+  
   if(t.id==='goCo'){openCheckout();return}
   if(t.id==='orderHere'){$('#plates').scrollIntoView({behavior:reduce?'auto':'smooth'});return}
   if(t.id==='brunchMenu'){showMenu('Brunch');$('#menu').scrollIntoView({behavior:reduce?'auto':'smooth'});return}
@@ -672,8 +676,9 @@ const PLATES=[
  ['Veggie Combo','Another look at the Veggie Combo.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg','Veggie Combo','jpeg'],
  ['Egusi & Collards','Happy hour bites with injera chips. Ask your server.','85c73b_a65aaf02e1d3461da082fca29c50e52e~mv2.webp',null,'webp']
 ];
+const FIT=(id,w,ext,cap)=>{const s=cap?Math.min(DPR,cap/w):DPR;return `${WIX}${id}/v1/fit/w_${Math.round(w*s)},h_${Math.round(w*s*2)},q_90,usm_0.66_1.00_0.01/a.${ext||'jpg'}`};
 const f=PLATES[0],fi=ITEMS[ID[f[3]]];
-$('#feat').innerHTML=`<div class="fimg"><img alt="${esc(f[0])}" src="${P(f[2],640,480,f[4],f[5])}" onerror="this.closest('.feat').remove()"></div><div><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:18px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}</span></div></div>`;
+$('#feat').innerHTML=`<div class="fimg"><img alt="${esc(f[0])}" src="${FIT(f[2],640,f[4],f[5])}" onerror="this.closest('.feat').remove()"></div><div><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:18px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}</span></div></div>`;
 $('#cards').innerHTML=PLATES.slice(1).map(p=>{const it=p[3]!=null?ITEMS[ID[p[3]]]:null;return `<article class="card gem-cut"><div class="im"><img loading="lazy" alt="${esc(p[0])}" src="${P(p[2],300,375,p[4])}" onerror="this.closest('.card').remove()"></div><div class="tx"><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p><div class="buy">${it?`<span class="price">${money(it.price)}</span><button class="add gem-cut sm" data-add="${it.id}">Add to order</button>`:`<span class="tag">Happy hour</span>`}</div></div></article>`}).join('');
 
 /* ---------- MENU ---------- */
