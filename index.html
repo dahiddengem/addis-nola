@@ -9,18 +9,18 @@
 <meta property="og:title" content="Addis NOLA | Modern Ethiopian on Bayou Road">
 <meta property="og:description" content="Michelin-recognized modern Ethiopian cuisine on historic Bayou Road, New Orleans.">
 <meta property="og:image" content="https://static.wixstatic.com/media/85c73b_9d8ea9cc39024c9fa697d9e89956f328~mv2.jpg/v1/fill/w_1200,h_630,al_c,q_90/a.jpg">
-<link rel="icon" href="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_64,h_64,al_c,q_90/a.png">
+<link rel="icon" href="logo.avif" type="image/avif">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============ BRAND TOKENS (swap here to re-theme) ============
-   From addisnola.com's own OpenTable/site setup: black #030303, white, rose #da324f.
-   LOGO COLORS: lock exact hex values here once sampled from the logo file. */
+   Logo (sampled from their logo file) is one flat red #c82840 on black. Fills use it exactly;
+   --accent-text is a lighter tint of it so small red text passes contrast on black. */
 :root{
   --ink:#030303; --ink2:#0d0d0d; --ink3:#171717; --line:#2a2a2a;
   --white:#ffffff; --bone:#efe9e1; --mute:#a8a29a;
-  --accent:#da324f; --accent-deep:#a8203a; --ok:#1e4d36;
+  --accent:#c82840; --accent-deep:#9c1c30; --accent-text:#e8506a; --ok:#1e4d36;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -32,7 +32,7 @@ button{font:inherit}
 .disp{font-family:'Archivo',Impact,sans-serif;font-stretch:72%;font-weight:800;text-transform:uppercase;letter-spacing:-.005em;line-height:.92}
 .serif{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500}
 .mono{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:.72rem}
-.hl{color:var(--accent)}
+.hl{color:var(--accent-text)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
 .gem-cut{--c:10px;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
 .gem-cut.sm{--c:6px}
@@ -227,7 +227,7 @@ body.hasCart #cartbar{display:block}
 
 <header id="nav">
   <div class="wrap row">
-    <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" src="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_196,h_268,al_c,q_90,usm_0.66_1.00_0.01/a.png" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
+    <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" src="logo.avif" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
     <nav aria-label="Main">
       <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#reviews">Reviews</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
     </nav>
@@ -505,7 +505,7 @@ $('#mich').src=P('85c73b_a3819fc83e34462381d8caa1fad6f7fb~mv2.jpeg',140,64,'jpeg
 $('#band').style.backgroundImage=`url('${P('85c73b_e6da8bb7eeba450c9643496a00e9c3f9~mv2.jpg',Math.min(innerWidth,1600),110)}')`;
 $('#cimg').src=P('85c73b_b34ac75f4a844942bb1bf811ebc7549f~mv2.jpeg',620,360);
 $('#gift').src=P('85c73b_8d6d72bb2c02488281da7fcc4fc52261~mv2.png',64,64,'png');
-$('#emblem').src=P('04b055_50c049f0303b430e82d13070e7e77e7f~mv2.jpg',46,43);
+$('#emblem').src='logo.avif';
 (()=>{const m=matchMedia('(max-width:959px)');const f=()=>$('#navReserve').style.display=m.matches?'none':'';f();m.addEventListener('change',f)})();
 
 /* ---------- nav ---------- */
