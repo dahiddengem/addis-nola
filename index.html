@@ -75,38 +75,23 @@ button{font:inherit}
 .badge{display:flex;gap:14px;align-items:center}
 .badge img{height:58px;background:#fff;padding:3px}
 
-/* WELCOME */
-.pair{display:grid;gap:12px;grid-template-columns:1fr 1fr;align-items:start;max-width:820px}
-.pair .ph{position:relative}
-.pair img{width:100%;height:50vh;max-height:520px;object-fit:cover}
-.pair .ph:nth-child(2){margin-top:48px}
 .big{font-size:clamp(2.4rem,7vw,5.6rem)}
 
-/* add-a-dish chip on photos */
-.addchip{position:absolute;right:10px;bottom:10px;min-height:44px;padding:0 14px;background:rgba(3,3,3,.82);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700;font-size:.8rem;cursor:pointer;z-index:3}
+/* add-a-dish chip on photos (hover on desktop, always visible on touch) */
+.ph{position:relative}
+.addchip{position:absolute;right:10px;bottom:10px;min-height:44px;padding:0 14px;background:rgba(3,3,3,.82);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700;font-size:.8rem;cursor:pointer;z-index:3;transition:opacity .2s}
 .addchip:hover{background:var(--accent);border-color:var(--accent)}
+@media(hover:hover){.addchip{opacity:0}.ph:hover .addchip,.slide:hover .addchip,.addchip:focus-visible{opacity:1}}
 
-/* STRIP */
-#strip{position:relative}
-#strip .pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
-#strip .track{display:flex;gap:14px;padding:0 5vw;will-change:transform}
-#strip .slide{flex:0 0 auto;height:56vh;position:relative}
-#strip .slide img{height:100%;width:auto;aspect-ratio:var(--ar);object-fit:cover}
-#strip .slide .num{position:absolute;left:10px;bottom:8px;font-size:.7rem;color:#fff;text-shadow:0 1px 4px #000}
-#strip .head{padding:0 5vw 22px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
-#bar{height:2px;background:var(--line);margin:22px 5vw 0}#bar i{display:block;height:100%;width:0;background:var(--accent)}
-.noPin #strip .pin{position:static;height:auto;padding:60px 0}
-.noPin #strip .track{overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
-.noPin #strip .slide{scroll-snap-align:center;height:52vh}
-.noPin #bar{display:none}
-
-/* PLATES */
-.feature{position:relative;min-height:68vh;display:flex;align-items:flex-end;overflow:hidden}
-.feature img.bgi{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;will-change:transform}
-.feature::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(3,3,3,.92) 0%,rgba(3,3,3,.05) 60%)}
-.feature .cap{position:relative;z-index:2;padding:0 16px 40px;width:100%;max-width:1200px;margin:0 auto}
-.feature h3{font-size:clamp(2.2rem,7vw,5rem)}
-.feature p{max-width:30rem;margin-top:.6rem;color:#e8e1d8}
+/* ORDER SECTION */
+.ogrid{display:grid;gap:12px;grid-template-columns:1fr}@media(min-width:700px){.ogrid{grid-template-columns:repeat(4,1fr)}}
+.oc{display:block;padding:24px;background:var(--ink2);border:1px solid var(--line);text-decoration:none;min-height:140px;transition:border-color .2s;color:inherit;text-align:left;cursor:pointer;width:100%}
+.oc:hover{border-color:var(--accent)}.oc b{font-family:'Archivo';font-stretch:76%;text-transform:uppercase;font-size:1.5rem;display:block}.oc small{color:var(--mute)}
+.feat{display:grid;gap:24px;align-items:center;margin-top:30px}
+@media(min-width:800px){.feat{grid-template-columns:minmax(0,640px) 1fr;gap:44px}}
+.feat .fimg img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.feat h3{font-size:clamp(2.2rem,6vw,4rem)}
+.feat p{color:#e8e1d8;margin-top:.6rem;max-width:28rem}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
 @media(min-width:760px){.cards{grid-template-columns:repeat(4,1fr)}}
 .card{background:var(--ink2);border:1px solid var(--line);display:flex;flex-direction:column}
@@ -120,7 +105,6 @@ button{font:inherit}
 .price{font-family:'DM Mono',monospace;font-size:.85rem}
 .add{min-height:44px;padding:0 14px;background:var(--accent);color:#fff;border:0;font-weight:700;font-size:.82rem;cursor:pointer}
 .add:hover{background:var(--accent-deep)}
-.add.alt{background:transparent;box-shadow:inset 0 0 0 1px var(--line);color:var(--mute);cursor:default}
 
 /* MENU */
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0}
@@ -131,6 +115,24 @@ button{font:inherit}
 .dish p{color:var(--mute);font-size:.95rem;grid-column:1}
 .dish .r{grid-column:2;grid-row:1/3;display:flex;align-items:center;gap:12px}
 .tag{font-size:.72rem;color:var(--mute);border:1px solid var(--line);padding:4px 8px}
+
+/* GALLERY: normal scrolling, arrows, drag. No scroll-jacking. */
+.thead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.tctl{display:flex;align-items:center;gap:10px}
+.nb{width:48px;height:48px;border:1px solid var(--line);background:var(--ink3);color:#fff;font-size:1.3rem;cursor:pointer}
+.nb:hover{border-color:var(--accent);background:var(--accent)}
+.track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 16px 18px;margin-top:22px;scrollbar-width:thin;scrollbar-color:var(--accent) var(--ink3);-webkit-overflow-scrolling:touch;cursor:grab}
+.track.drag{cursor:grabbing;scroll-snap-type:none}
+.slide{flex:0 0 auto;height:min(58vh,520px);position:relative;scroll-snap-align:center}
+.slide img{height:100%;width:auto;aspect-ratio:var(--ar);object-fit:cover;user-select:none;-webkit-user-drag:none}
+.slide .num{position:absolute;left:10px;bottom:8px;font-size:.7rem;color:#fff;text-shadow:0 1px 4px #000}
+#bar{height:2px;background:var(--line);margin:0 16px}#bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
+
+/* WELCOME MOSAIC */
+.mosaic{columns:2;column-gap:12px;margin-top:40px}
+@media(min-width:800px){.mosaic{columns:3}}
+.mosaic .ph{break-inside:avoid;margin-bottom:12px}
+.mosaic img{width:100%;height:auto}
 
 /* PEOPLE */
 .people{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
@@ -156,22 +158,17 @@ button{font:inherit}
 .steps{list-style:none;margin-top:20px;display:grid;gap:12px}
 .steps li{display:flex;gap:14px;align-items:baseline}
 .steps b{font-family:'Archivo';font-stretch:72%;font-weight:800;font-size:2.4rem;color:var(--accent);line-height:1}
-form,.panel{background:var(--ink2);border:1px solid var(--line);padding:24px}
+form{background:var(--ink2);border:1px solid var(--line);padding:24px}
 .fg{display:grid;gap:14px}@media(min-width:620px){.fg.two{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
 label,.lbl{display:block;font-size:.8rem;margin-bottom:4px;color:var(--mute)}
 input,select,textarea{width:100%;min-height:46px;padding:10px 12px;background:var(--ink);color:#fff;border:1px solid var(--line);font:inherit;border-radius:0}
 input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ok{display:none;margin-top:14px;padding:12px;background:var(--ok);font-size:.9rem}
 
-/* ORDER SECTION */
-.ogrid{display:grid;gap:12px;grid-template-columns:1fr}@media(min-width:700px){.ogrid{grid-template-columns:repeat(4,1fr)}}
-.oc{display:block;padding:24px;background:var(--ink2);border:1px solid var(--line);text-decoration:none;min-height:140px;transition:border-color .2s;color:inherit;text-align:left;cursor:pointer;width:100%}
-.oc:hover{border-color:var(--accent)}.oc b{font-family:'Archivo';font-stretch:76%;text-transform:uppercase;font-size:1.5rem;display:block}.oc small{color:var(--mute)}
-
 /* VISIT */
-#visit{position:relative;overflow:hidden}
-#visit .vbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.22}
-#visit .wrap{position:relative}
+.vgrid{display:grid;gap:40px}@media(min-width:900px){.vgrid{grid-template-columns:1fr 1fr}}
+.mapbox{aspect-ratio:4/3;border:1px solid var(--line);background:var(--ink3);overflow:hidden}
+.mapbox iframe{width:100%;height:100%;border:0;filter:grayscale(1) invert(.92) contrast(.9)}
 table{width:100%;border-collapse:collapse}td{padding:12px 0;border-bottom:1px solid var(--line);font-size:.92rem}td:last-child{text-align:right}
 tr.today td{color:var(--accent);font-weight:700}
 .band{height:110px;background-size:cover;background-position:center;opacity:.9}
@@ -222,18 +219,18 @@ body.hasCart #cartbar{display:block}
 
 <header id="nav">
   <div class="wrap row">
-    <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" id="navLogo" src="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_196,h_268,al_c,q_90,usm_0.66_1.00_0.01/a.png" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
+    <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" src="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_196,h_268,al_c,q_90,usm_0.66_1.00_0.01/a.png" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
     <nav aria-label="Main">
-      <a href="#welcome">Welcome</a><a href="#table">The Table</a><a href="#plates">The Plates</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
+      <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
     </nav>
     <div class="navR">
-      <a class="btn gem-cut sm small" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US" style="display:none" id="navReserve">Reserve</a>
+      <a class="btn gem-cut sm small" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US" id="navReserve">Reserve</a>
       <button id="navCart" class="gem-cut sm" aria-label="Open your order">Your order (<span id="navCount">0</span>)</button>
       <button id="burger" aria-label="Open menu" aria-expanded="false"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     </div>
   </div>
   <div id="mnav">
-    <a href="#welcome">Welcome</a><a href="#table">The Table</a><a href="#plates">The Plates</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#order">Order</a><a href="#visit">Visit</a>
+    <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
     <a class="btn gem-cut" style="margin-top:14px" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
   </div>
 </header>
@@ -250,12 +247,12 @@ body.hasCart #cartbar{display:block}
     <div class="heroRow reveal">
       <div style="display:flex;flex-wrap:wrap;gap:16px">
         <div>
-          <a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
-          <span class="note">Free to book · Confirmed instantly on OpenTable</span>
+          <a class="btn gem-cut" href="#order">Order now</a>
+          <span class="note">Pickup or delivery · Takes 2 minutes</span>
         </div>
         <div>
-          <a class="btn ghost gem-cut" href="#plates">Order for pickup</a>
-          <span class="note">Pick your plates · Takes 2 minutes</span>
+          <a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
+          <span class="note">Free to book · Confirmed instantly on OpenTable</span>
         </div>
       </div>
       <div class="badge">
@@ -267,46 +264,69 @@ body.hasCart #cartbar{display:block}
   </div>
 </section>
 
-<!-- I WELCOME -->
-<section id="welcome" class="sec">
+<!-- I ORDER NOW (ordering channels, plates, full menu) -->
+<section id="order" class="sec">
   <div class="wrap">
-    <p class="mono chap">I · The Welcome</p>
-    <h2 class="disp big reveal" style="max-width:15ch">A welcome to Addis NOLA is a welcome <span class="hl">back</span> home.</h2>
-    <div class="pair" id="pair" style="margin-top:44px"></div>
-    <p class="reveal" style="max-width:40rem;margin-top:44px;color:var(--mute);line-height:1.7">Nestled on historic Bayou Road, New Orleans' oldest road and a cultural hub of Black-owned businesses. A space designed by OI Studio and Nomita Joshi, filled with African art. Family-owned, Black- and female-led.</p>
+    <p class="mono chap">I · Order now</p>
+    <h2 class="disp big reveal">Bring Bayou Road <span class="hl">home</span>.</h2>
+    <div class="ogrid" style="margin-top:34px">
+      <button class="oc gem-cut" id="orderHere"><b>Order here</b><small>Pickup or delivery · Demo checkout</small></button>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.ubereats.com/store/addis-nola/WFtr66k8QeOjza79omxwlw"><b>Uber Eats</b><small>Delivery</small></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.doordash.com/store/addis-nola-(bayou-road)-new-orleans-789875/2614679/"><b>DoorDash</b><small>Delivery</small></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://my.loopz.io/gift-card/ce4ab0f9-84d7-4825-82c3-acb885d3e27f?locale=en-US" style="display:flex;gap:14px;align-items:center"><img alt="Addis NOLA gift card" id="gift" style="width:64px;height:64px;object-fit:contain" loading="lazy" onerror="this.remove()"><span><b>Gift cards</b><small>Share the culture</small></span></a>
+    </div>
+
+    <div id="plates" style="margin-top:72px">
+      <p class="mono hl">The plates</p>
+      <h2 class="disp" style="font-size:clamp(2.2rem,6vw,4rem);margin-top:6px">Deep, rich <span class="hl">flavors</span>.</h2>
+      <p class="note" style="margin-top:12px"><span class="demo">Demo prices</span>&nbsp; Real menu prices drop in before launch.</p>
+      <div class="feat" id="feat"></div>
+      <div class="cards" id="cards" style="margin-top:30px"></div>
+    </div>
+
+    <div class="reveal" style="margin-top:56px;display:grid;gap:14px;max-width:760px">
+      <p class="mono hl">Brunchin' on the Bayou · Sat &amp; Sun · 11 AM to 2:30 PM</p>
+      <p style="color:var(--mute);line-height:1.7">Sweet awaze chicken and waffles, shrimp tibs and grits, honey wine and bottomless mimosas.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px">
+        <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve brunch</a><span class="note">Free to book</span></div>
+        <div><button class="btn ghost gem-cut" id="brunchMenu">See the brunch menu</button><span class="note">Add brunch to a pickup order</span></div>
+      </div>
+    </div>
+
+    <div id="menu" style="margin-top:72px">
+      <p class="mono hl">The full menu</p>
+      <h2 class="disp" style="font-size:clamp(2.2rem,6vw,4rem);margin-top:6px">Everything on the <span class="hl">table</span>.</h2>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div id="menuBody"></div>
+      <p style="margin-top:22px"><a class="hl" target="_blank" rel="noopener" href="https://search.picknic.app/biz/addis-nola-new-orleans">Allergen guide</a></p>
+    </div>
   </div>
 </section>
 <div class="band" id="band" role="img" aria-label="Addis NOLA banner"></div>
 
-<!-- II THE TABLE -->
-<section id="table"><div id="strip">
-  <div class="pin">
-    <div class="head">
-      <div><p class="mono hl">II · The Table</p><h2 class="disp" style="font-size:clamp(2.4rem,6vw,4.6rem)">Eat with your <span class="hl">hands</span>.</h2></div>
-      <p class="mono" id="count" style="color:var(--mute)">01 / 14</p>
-    </div>
-    <div class="track" id="track"></div>
-    <div id="bar"><i id="barI"></i></div>
+<!-- II THE TABLE (gallery) -->
+<section id="table" class="sec" style="padding-bottom:40px">
+  <div class="wrap thead">
+    <div><p class="mono chap">II · The Table</p><h2 class="disp big">Eat with your <span class="hl">hands</span>.</h2>
+      <p class="note">Swipe, drag or use the arrows. Spot a dish? Tap + Add a dish.</p></div>
+    <div class="tctl"><span class="mono" id="count" style="color:var(--mute)">01 / 09</span><button class="nb gem-cut sm" id="prev" aria-label="Previous photos">&larr;</button><button class="nb gem-cut sm" id="next" aria-label="Next photos">&rarr;</button></div>
   </div>
-</div></section>
+  <div class="track" id="track" tabindex="0" aria-label="Photo gallery, scrolls sideways"></div>
+  <div id="bar"><i id="barI"></i></div>
+</section>
 
-<!-- III THE PLATES -->
-<section id="plates">
-  <div class="wrap" style="padding-top:84px"><p class="mono chap">III · The Plates</p><h2 class="disp big reveal">Deep, rich <span class="hl">flavors</span>.</h2>
-    <p class="note" style="margin-top:12px"><span class="demo">Demo prices</span>&nbsp; Real menu prices drop in before launch.</p></div>
-  <div id="featureWrap" style="margin-top:36px"></div>
-  <div class="wrap" style="margin-top:14px"><div class="cards" id="cards"></div></div>
-  <div class="wrap sec" id="menu">
-    <p class="mono hl">The full menu</p>
-    <h2 class="disp" style="font-size:clamp(2.2rem,6vw,4rem);margin-top:6px">Everything on the <span class="hl">table</span>.</h2>
-    <div class="tabs" role="tablist" id="tabs"></div>
-    <div id="menuBody"></div>
-    <p style="margin-top:22px"><a class="hl" target="_blank" rel="noopener" href="https://search.picknic.app/biz/addis-nola-new-orleans">Allergen guide</a></p>
+<!-- III WELCOME -->
+<section id="welcome" class="sec" style="background:var(--ink2)">
+  <div class="wrap">
+    <p class="mono chap">III · The Welcome</p>
+    <h2 class="disp big reveal" style="max-width:15ch">A welcome to Addis NOLA is a welcome <span class="hl">back</span> home.</h2>
+    <p class="reveal" style="max-width:40rem;margin-top:24px;color:var(--mute);line-height:1.7">Nestled on historic Bayou Road, New Orleans' oldest road and a cultural hub of Black-owned businesses. A space designed by OI Studio and Nomita Joshi, filled with African art. Family-owned, Black- and female-led.</p>
+    <div class="mosaic" id="mosaic"></div>
   </div>
 </section>
 
 <!-- IV THE PEOPLE -->
-<section id="people" class="sec" style="background:var(--ink2)">
+<section id="people" class="sec">
   <div class="wrap">
     <p class="mono chap">IV · The People</p>
     <h2 class="disp big reveal">A cultural <span class="hl">hub</span>, run like family.</h2>
@@ -319,7 +339,7 @@ body.hasCart #cartbar{display:block}
 </section>
 
 <!-- V JOURNAL -->
-<section id="journal" class="sec">
+<section id="journal" class="sec" style="background:var(--ink2)">
   <div class="wrap">
     <p class="mono chap">V · The Journal</p>
     <h2 class="disp big reveal">Notes from <span class="hl">Bayou</span> Road.</h2>
@@ -328,8 +348,8 @@ body.hasCart #cartbar{display:block}
   </div>
 </section>
 
-<!-- CATERING -->
-<section id="catering" class="sec" style="background:var(--ink2)">
+<!-- VI CATERING -->
+<section id="catering" class="sec">
   <div class="wrap cgrid">
     <div>
       <p class="mono chap">VI · Catering</p>
@@ -366,46 +386,29 @@ body.hasCart #cartbar{display:block}
   </div>
 </section>
 
-<!-- ORDER -->
-<section id="order" class="sec">
-  <div class="wrap">
-    <p class="mono chap">VII · Order</p>
-    <h2 class="disp big reveal">Bring Bayou Road <span class="hl">home</span>.</h2>
-    <div class="ogrid" style="margin-top:34px">
-      <button class="oc gem-cut" id="orderHere"><b>Order here</b><small>Pickup or delivery · Demo checkout</small></button>
-      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.ubereats.com/store/addis-nola/WFtr66k8QeOjza79omxwlw"><b>Uber Eats</b><small>Delivery</small></a>
-      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.doordash.com/store/addis-nola-(bayou-road)-new-orleans-789875/2614679/"><b>DoorDash</b><small>Delivery</small></a>
-      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://my.loopz.io/gift-card/ce4ab0f9-84d7-4825-82c3-acb885d3e27f?locale=en-US" style="display:flex;gap:14px;align-items:center"><img alt="Addis NOLA gift card" id="gift" style="width:64px;height:64px;object-fit:contain" loading="lazy" onerror="this.remove()"><span><b>Gift cards</b><small>Share the culture</small></span></a>
-    </div>
-    <div class="reveal" style="margin-top:50px;display:grid;gap:14px;max-width:760px">
-      <p class="mono hl">Brunchin' on the Bayou · Sat &amp; Sun · 11 AM to 2:30 PM</p>
-      <p style="color:var(--mute);line-height:1.7">Sweet awaze chicken and waffles, shrimp tibs and grits, honey wine and bottomless mimosas.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:14px">
-        <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve brunch</a><span class="note">Free to book</span></div>
-        <div><button class="btn ghost gem-cut" id="brunchMenu">See the brunch menu</button><span class="note">Add brunch to a pickup order</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VISIT -->
+<!-- VII VISIT -->
 <section id="visit" class="sec" style="background:var(--ink2)">
-  <div class="vbg" id="vbg"></div>
-  <div class="wrap" style="display:grid;gap:44px">
+  <div class="wrap vgrid">
     <div>
-      <p class="mono chap">VIII · Visit</p>
+      <p class="mono chap">VII · Visit</p>
       <h2 class="disp big">Find us on <span class="hl">Bayou</span> Road.</h2>
       <address style="font-style:normal;margin-top:22px;line-height:1.7">2514 Bayou Rd<br>New Orleans, Louisiana 70119</address>
       <p style="margin-top:8px"><a href="tel:+15043232944">(504) 323-2944</a></p>
       <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:14px">
-        <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2514+Bayou+Rd+New+Orleans+LA+70119">Get directions</a><span class="note">Opens Google Maps</span></div>
+        <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2514+Bayou+Rd+New+Orleans+LA+70119">Google Maps</a><span class="note">Directions</span></div>
+        <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Addis+NOLA&address=2514+Bayou+Rd%2C+New+Orleans%2C+LA+70119">Apple Maps</a><span class="note">Directions</span></div>
         <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a><span class="note">Free to book</span></div>
       </div>
       <p class="mono" style="margin-top:28px;display:flex;flex-wrap:wrap;gap:20px">
         <a target="_blank" rel="noopener" href="https://www.instagram.com/addisnola">Instagram</a><a target="_blank" rel="noopener" href="https://www.facebook.com/addisnola2019">Facebook</a><a target="_blank" rel="noopener" href="https://www.tiktok.com/@addisnola">TikTok</a><a target="_blank" rel="noopener" href="https://x.com/addisnola">X</a><a target="_blank" rel="noopener" href="https://www.youtube.com/@addisnolaethiopiankitchen6559">YouTube</a>
       </p>
+      <h3 class="disp" style="font-size:2rem;margin:36px 0 10px">Hours</h3>
+      <table id="hours" style="max-width:480px"></table>
     </div>
-    <div style="max-width:520px"><h3 class="disp" style="font-size:2rem;margin-bottom:10px">Hours</h3><table id="hours"></table></div>
+    <div>
+      <div class="mapbox gem-cut"><iframe title="Map showing Addis NOLA at 2514 Bayou Rd, New Orleans" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=2514+Bayou+Rd,+New+Orleans,+LA+70119&amp;output=embed"></iframe></div>
+      <p class="note">Map by Google. Tap Apple Maps for directions on iPhone.</p>
+    </div>
   </div>
 </section>
 </main>
@@ -449,15 +452,16 @@ body.hasCart #cartbar{display:block}
   <div class="mbody"><p style="color:var(--mute);font-size:.92rem">Demo placeholder. The live site would link Addis NOLA's own privacy policy. Details entered in the catering form or demo checkout would be used only to answer your request.</p></div></div></div>
 
 <script>
-/* ---------- image helper: sized for the screen's real pixel density so photos stay sharp ---------- */
+/* ---------- image helper: sized for the screen's pixel density, but never past the photo's real size ---------- */
 const DPR=Math.min(window.devicePixelRatio||1,2.5);
 const WIX='https://static.wixstatic.com/media/';
-const P=(id,w,h,ext)=>`${WIX}${id}/v1/fill/w_${Math.round(w*DPR)},h_${Math.round(h*DPR)},al_c,q_90,usm_0.66_1.00_0.01/a.${ext||'jpg'}`;
+/* cap = known native width of the source photo; stops us enlarging small originals (that is what causes blur) */
+const P=(id,w,h,ext,cap)=>{const s=cap?Math.min(DPR,cap/w):DPR;return `${WIX}${id}/v1/fill/w_${Math.round(w*s)},h_${Math.round(h*s)},al_c,q_90,usm_0.66_1.00_0.01/a.${ext||'jpg'}`};
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 const money=n=>'$'+n.toFixed(2);
-document.getElementById('yr').textContent=new Date().getFullYear();
+$('#yr').textContent=new Date().getFullYear();
 
 /* static images */
 $('#heroBg').style.backgroundImage=`url('${P('85c73b_9d8ea9cc39024c9fa697d9e89956f328~mv2.jpg',Math.min(innerWidth,1800),Math.min(innerHeight*1.15,1200))}')`;
@@ -466,8 +470,6 @@ $('#band').style.backgroundImage=`url('${P('85c73b_e6da8bb7eeba450c9643496a00e9c
 $('#cimg').src=P('85c73b_b34ac75f4a844942bb1bf811ebc7549f~mv2.jpeg',620,360);
 $('#gift').src=P('85c73b_8d6d72bb2c02488281da7fcc4fc52261~mv2.png',64,64,'png');
 $('#emblem').src=P('04b055_50c049f0303b430e82d13070e7e77e7f~mv2.jpg',46,43);
-$('#vbg').style.backgroundImage=`url('${P('22e53e_ef2ebbf33af24b7fba34e44589f3dc38~mv2.jpg',Math.min(innerWidth,1400),900)}')`;
-$('#navReserve').style.display='';
 (()=>{const m=matchMedia('(max-width:959px)');const f=()=>$('#navReserve').style.display=m.matches?'none':'';f();m.addEventListener('change',f)})();
 
 /* ---------- nav ---------- */
@@ -609,7 +611,7 @@ document.addEventListener('click',e=>{
   if(t.hasAttribute('data-close')){closeAll();return}
   if(t.id==='navCart'||t.id==='barBtn'){openDrawer();return}
   if(t.id==='goCo'){openCheckout();return}
-  if(t.id==='orderHere'){location.hash='#plates';return}
+  if(t.id==='orderHere'){$('#plates').scrollIntoView({behavior:reduce?'auto':'smooth'});return}
   if(t.id==='brunchMenu'){showMenu('Brunch');$('#menu').scrollIntoView({behavior:reduce?'auto':'smooth'});return}
   if(t.dataset.mode){CO.mode=t.dataset.mode;renderCo();return}
   if(t.dataset.tip!==undefined){CO.tip=+t.dataset.tip;renderCo();return}
@@ -621,42 +623,20 @@ document.addEventListener('submit',e=>{
   if(e.target.id==='cform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#cok').style.display='block'}
 });
 
-/* ---------- WELCOME photos (can add a dish) ---------- */
-const WP=[['85c73b_9128dbf29d654222bcbd535bf90c1683~mv2.jpg','Dish from the Addis NOLA kitchen'],['85c73b_dc34a96d97124c729f68db0b92da4b7c~mv2.jpg','A table spread at Addis NOLA']];
-$('#pair').innerHTML=WP.map(([id,alt])=>`<div class="ph reveal"><img loading="lazy" alt="${alt}" src="${P(id,410,520)}"><button class="addchip gem-cut sm" data-pick>+ Add a dish</button></div>`).join('');
-
-/* ---------- THE TABLE: all 14 gallery photos, each can add a dish ---------- */
-const G=[['85c73b_a9f2c7b1d07c494fb29a58864f7f85a7f003.jpg',368,655],['85c73b_dc37f5d3b9b64ca489c985b65c3e54a4~mv2.jpg',524,655],['85c73b_507ac152d1c147949e39b278360d32fd~mv2.jpg',526,655],['85c73b_10851c09312444a5b07c142bda63938f~mv2.jpg',410,512],['85c73b_bb77fbf87e9646a885f4175cfb50a69c~mv2.jpg',592,512],['85c73b_a24bac30910e4476a76ebbc2f0f8a7db~mv2.jpg',416,512],['85c73b_b0be161d8a0a40e883428b7bb0baf59f~mv2.jpg',336,418],['85c73b_d1ecfbcfd1154103896a11479a2c8e09~mv2.jpg',336,418],['85c73b_73863d5db4ac471fa01a186632b5317c~mv2.jpg',746,418],['85c73b_7a05929da8b64bc790eea96ee806a3b8~mv2.jpg',536,670],['85c73b_9a050e60a70640c4917106e3d3dfcbb5~mv2.jpg',503,670],['85c73b_6c8207c9bcdb4105b6d40886ed5cfae5f003.jpg',379,670],['85c73b_81ff170fd8734c36ad849692ce36c59b~mv2.jpg',819,819],['85c73b_afc489a8a14643548b569fe405b6d109~mv2.jpg',615,819]];
-const track=$('#track');
-const slideH=()=>Math.round(innerHeight*(innerWidth>=800&&!reduce?.56:.52));
-track.innerHTML=G.map(([id,w,h],i)=>{const sh=slideH();return `<div class="slide gem-cut" style="--ar:${w}/${h}"><img loading="lazy" alt="Addis NOLA photo ${i+1} of ${G.length}" src="${P(id,sh*w/h,sh)}" onerror="this.closest('.slide').remove()"><span class="num mono">${String(i+1).padStart(2,'0')}</span><button class="addchip gem-cut sm" data-pick>+ Add a dish</button></div>`}).join('');
-const strip=$('#strip'),bar=$('#barI'),cnt=$('#count');let pinned=false;
-function setupStrip(){
-  pinned=!reduce&&innerWidth>=800;document.body.classList.toggle('noPin',!pinned);
-  if(!pinned){strip.style.height='auto';track.style.transform='';return}
-  strip.style.height=(innerHeight+Math.max(track.scrollWidth-innerWidth,0))+'px';updateStrip();
-}
-function updateStrip(){
-  if(!pinned)return;const r=strip.getBoundingClientRect(),total=strip.offsetHeight-innerHeight;
-  const p=Math.min(1,Math.max(0,-r.top/total)),dist=track.scrollWidth-innerWidth;
-  track.style.transform=`translate3d(${-p*dist}px,0,0)`;bar.style.width=(p*100)+'%';
-  const n=Math.min(G.length,Math.max(1,Math.round(p*(G.length-1))+1));cnt.textContent=String(n).padStart(2,'0')+' / '+G.length;
-}
-
-/* ---------- THE PLATES: one feature + a card grid, every dish photo adds to order ---------- */
+/* ---------- THE PLATES: contained feature photo + cards. Every dish photo adds to order. ---------- */
 const PLATES=[
- ['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish, served together.','85c73b_e8abaa2c67be4ff597c165b720aa3900~mv2.jpg','Endi Endi "Oh My Goodness"'],
- ['Sambusa','Two hand pies with lentils, collard greens or beef.','85c73b_f8a8155d2a424c28b21a23536bee530c~mv2.jpeg','Sambusa'],
- ['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.','85c73b_d150e074ac9044688ad1b1432a48620c~mv2.jpeg','Shrimp Kitfo'],
- ['Jollof Rice + Fried Egg','Jollof rice, a fried egg, and your choice of chicken, lamb or shrimp.','85c73b_a316bd795d63478db8da3f125eb1da98~mv2.jpg','Jollof Rice + Fried Egg'],
- ['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.','85c73b_8577be4ba70047659c3ab2647e702687~mv2.jpg','Veggie Combo'],
- ['Ethiopian Salad','Romaine, tomato, onion and lemon vinaigrette.','85c73b_bc3bdb7729e84915b69851fdbca14e5e~mv2.jpeg','Ethiopian Salad'],
- ['Veggie Combo','Another look at the Veggie Combo.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg','Veggie Combo'],
+ ['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish, served together.','85c73b_e8abaa2c67be4ff597c165b720aa3900~mv2.jpg','Endi Endi "Oh My Goodness"','jpg',1500],
+ ['Sambusa','Two hand pies with lentils, collard greens or beef.','85c73b_f8a8155d2a424c28b21a23536bee530c~mv2.jpeg','Sambusa','jpeg'],
+ ['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.','85c73b_d150e074ac9044688ad1b1432a48620c~mv2.jpeg','Shrimp Kitfo','jpeg'],
+ ['Jollof Rice + Fried Egg','Jollof rice, a fried egg, and your choice of chicken, lamb or shrimp.','85c73b_a316bd795d63478db8da3f125eb1da98~mv2.jpg','Jollof Rice + Fried Egg','jpg'],
+ ['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.','85c73b_8577be4ba70047659c3ab2647e702687~mv2.jpg','Veggie Combo','jpg'],
+ ['Ethiopian Salad','Romaine, tomato, onion and lemon vinaigrette.','85c73b_bc3bdb7729e84915b69851fdbca14e5e~mv2.jpeg','Ethiopian Salad','jpeg'],
+ ['Veggie Combo','Another look at the Veggie Combo.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg','Veggie Combo','jpeg'],
  ['Egusi & Collards','Happy hour bites with injera chips. Ask your server.','85c73b_a65aaf02e1d3461da082fca29c50e52e~mv2.webp',null,'webp']
 ];
 const f=PLATES[0],fi=ITEMS[ID[f[3]]];
-$('#featureWrap').innerHTML=`<section class="feature"><img class="bgi" alt="${esc(f[0])}" src="${P(f[2],Math.min(innerWidth,1600),Math.min(innerHeight*.8,900))}" onerror="this.closest('.feature').remove()"><div class="cap"><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:16px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}</span></div></div></section>`;
-$('#cards').innerHTML=PLATES.slice(1).map(p=>{const it=p[3]!=null?ITEMS[ID[p[3]]]:null;return `<article class="card gem-cut"><div class="im"><img loading="lazy" alt="${esc(p[0])}" src="${P(p[2],300,375,p[4])}" onerror="this.closest('.card').remove()"></div><div class="tx"><h3>${esc(p[0].replace(/&amp;/g,'&'))}</h3><p>${esc(p[1])}</p><div class="buy">${it?`<span class="price">${money(it.price)}</span><button class="add gem-cut sm" data-add="${it.id}">Add to order</button>`:`<span class="tag">Happy hour</span>`}</div></div></article>`}).join('');
+$('#feat').innerHTML=`<div class="fimg"><img alt="${esc(f[0])}" src="${P(f[2],640,480,f[4],f[5])}" onerror="this.closest('.feat').remove()"></div><div><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:18px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}</span></div></div>`;
+$('#cards').innerHTML=PLATES.slice(1).map(p=>{const it=p[3]!=null?ITEMS[ID[p[3]]]:null;return `<article class="card gem-cut"><div class="im"><img loading="lazy" alt="${esc(p[0])}" src="${P(p[2],300,375,p[4])}" onerror="this.closest('.card').remove()"></div><div class="tx"><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p><div class="buy">${it?`<span class="price">${money(it.price)}</span><button class="add gem-cut sm" data-add="${it.id}">Add to order</button>`:`<span class="tag">Happy hour</span>`}</div></div></article>`}).join('');
 
 /* ---------- MENU ---------- */
 const tabs=$('#tabs'),mb=$('#menuBody');
@@ -668,6 +648,36 @@ function showMenu(n){
 }
 Object.keys(MENU).forEach(n=>{const b=document.createElement('button');b.className='tab gem-cut sm';b.textContent=n;b.dataset.t=n;b.setAttribute('role','tab');b.onclick=()=>showMenu(n);tabs.appendChild(b)});
 showMenu('Dinner');
+
+/* ---------- THE TABLE: gallery with arrows, drag and swipe ---------- */
+const G=[['85c73b_a9f2c7b1d07c494fb29a58864f7f85a7f003.jpg',368,655],['85c73b_dc37f5d3b9b64ca489c985b65c3e54a4~mv2.jpg',524,655],['85c73b_507ac152d1c147949e39b278360d32fd~mv2.jpg',526,655],['85c73b_10851c09312444a5b07c142bda63938f~mv2.jpg',410,512],['85c73b_b0be161d8a0a40e883428b7bb0baf59f~mv2.jpg',336,418],['85c73b_d1ecfbcfd1154103896a11479a2c8e09~mv2.jpg',336,418],['85c73b_7a05929da8b64bc790eea96ee806a3b8~mv2.jpg',536,670],['85c73b_9a050e60a70640c4917106e3d3dfcbb5~mv2.jpg',503,670],['85c73b_6c8207c9bcdb4105b6d40886ed5cfae5f003.jpg',379,670]];
+const track=$('#track');
+const sh=Math.round(Math.min(innerHeight*.58,520));
+track.innerHTML=G.map(([id,w,h],i)=>`<div class="slide ph gem-cut" style="--ar:${w}/${h}"><img loading="lazy" draggable="false" alt="Addis NOLA photo ${i+1} of ${G.length}" src="${P(id,sh*w/h,sh)}" onerror="this.closest('.slide').remove()"><span class="num mono">${String(i+1).padStart(2,'0')}</span><button class="addchip gem-cut sm" data-pick>+ Add a dish</button></div>`).join('');
+const bar=$('#barI'),cnt=$('#count');
+function updateTrack(){
+  const max=track.scrollWidth-track.clientWidth,p=max>0?track.scrollLeft/max:0;
+  bar.style.width=(p*100)+'%';
+  const slides=[...track.children],mid=track.scrollLeft+track.clientWidth/2;
+  let best=0,bd=1e9;slides.forEach((s,i)=>{const d=Math.abs(s.offsetLeft+s.offsetWidth/2-mid);if(d<bd){bd=d;best=i}});
+  cnt.textContent=String(Math.min(best+1,slides.length)).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+}
+track.addEventListener('scroll',updateTrack,{passive:true});
+const step=dir=>track.scrollBy({left:dir*Math.max(track.clientWidth*.8,260),behavior:reduce?'auto':'smooth'});
+$('#prev').onclick=()=>step(-1);$('#next').onclick=()=>step(1);
+track.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();step(1)}if(e.key==='ArrowLeft'){e.preventDefault();step(-1)}});
+/* mouse drag (touch uses native swipe) */
+(()=>{let down=false,sx=0,sl=0,moved=false;
+  track.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('button'))return;down=true;moved=false;sx=e.clientX;sl=track.scrollLeft});
+  addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>4){moved=true;track.classList.add('drag')}track.scrollLeft=sl-dx});
+  addEventListener('pointerup',()=>{down=false;track.classList.remove('drag')});
+})();
+addEventListener('resize',updateTrack);setTimeout(updateTrack,50);
+
+/* ---------- THE WELCOME: image mosaic (every photo can add a dish) ---------- */
+const WP=[['85c73b_9128dbf29d654222bcbd535bf90c1683~mv2.jpg',482,603,'Dish from the Addis NOLA kitchen'],['85c73b_dc34a96d97124c729f68db0b92da4b7c~mv2.jpg',482,602,'A table spread at Addis NOLA'],['85c73b_73863d5db4ac471fa01a186632b5317c~mv2.jpg',746,418,'Addis NOLA photo'],['85c73b_81ff170fd8734c36ad849692ce36c59b~mv2.jpg',819,819,'Addis NOLA photo'],['85c73b_afc489a8a14643548b569fe405b6d109~mv2.jpg',615,819,'Addis NOLA photo'],['85c73b_bb77fbf87e9646a885f4175cfb50a69c~mv2.jpg',592,512,'Addis NOLA photo'],['85c73b_a24bac30910e4476a76ebbc2f0f8a7db~mv2.jpg',416,512,'Addis NOLA photo']];
+const mw=Math.round((Math.min(innerWidth,1200)-32)/(innerWidth>=800?3:2));
+$('#mosaic').innerHTML=WP.map(([id,w,h,alt])=>`<div class="ph reveal gem-cut"><img loading="lazy" alt="${alt}" style="aspect-ratio:${w}/${h};object-fit:cover" src="${P(id,mw,Math.round(mw*h/w))}" onerror="this.closest('.ph').remove()"><button class="addchip gem-cut sm" data-pick>+ Add a dish</button></div>`).join('');
 
 /* ---------- THE PEOPLE ---------- */
 const PPL=[['Biruk Alemayehu, PhD','Founder','85c73b_39c27cf456cd4808a3f83a1f212d6a1e~mv2.jpg','jpg'],['Jaime Lobo','Chef / General Manager','85c73b_86cbd808ec3541ac8002d3c18c2b5add~mv2.jpg','jpg'],['Prince Lobo','General Manager / Chef','85c73b_9bbcc6a8b33d42a7b121ed57f8f49725~mv2.jpg','jpg'],['Blaze Williams Jr.','Assistant Manager / Server','5fe41e_4edc43f8834b415fa43ddfa2ed9541fe~mv2.png','png'],['Robert Manos','Server','85c73b_b38f8fd3377941a295ff115d1bdf5c19~mv2.jpg','jpg']];
@@ -711,13 +721,8 @@ $('#openNow').textContent=isOpen(new Date())?'Open now':'Closed right now';
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const heroBg=$('#heroBg');
-function parallax(){
-  if(reduce)return;
-  heroBg.style.transform=`translate3d(0,${Math.min(scrollY,900)*.18}px,0)`;
-  const fe=document.querySelector('.feature');if(fe){const r=fe.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){const k=(r.top+r.height/2-innerHeight/2)/innerHeight;fe.querySelector('.bgi').style.transform=`translate3d(0,${k*-50}px,0)`}}
-}
-let tick=false;addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(()=>{updateStrip();parallax();tick=false})}},{passive:true});
-addEventListener('resize',setupStrip);addEventListener('load',setupStrip);setupStrip();parallax();renderBar();
+let tick=false;addEventListener('scroll',()=>{if(!tick&&!reduce){tick=true;requestAnimationFrame(()=>{heroBg.style.transform=`translate3d(0,${Math.min(scrollY,900)*.18}px,0)`;tick=false})}},{passive:true});
+renderBar();
 </script>
 </body>
 </html>
