@@ -289,7 +289,7 @@ body.hasCart #cartbar{display:block}
     <div id="plates" style="margin-top:72px">
       <p class="mono hl">The plates</p>
       <h2 class="disp" style="font-size:clamp(2.2rem,6vw,4rem);margin-top:6px">Deep, rich <span class="hl">flavors</span>.</h2>
-      <p class="note" style="margin-top:12px"><span class="demo">Demo prices</span>&nbsp; Real menu prices drop in before launch.</p>
+      <p class="note" style="margin-top:12px"><span class="demo">Real menu prices</span>&nbsp; Pulled from your online ordering site. A few chef's-combo plates and desserts aren't sold online, so those are still estimates — confirm with us.</p>
       <div class="feat" id="feat"></div>
       <div class="cards" id="cards" style="margin-top:30px"></div>
     </div>
@@ -524,8 +524,8 @@ const MENU={
 'Dessert':[['Fresh Froot','The Froot Orleans fruit bowl.'],['Addis Affogato','Homemade vanilla ice cream, Oreo crumble, Ethiopian coffee.'],['The King\'s Bread Pudding','Vanilla ice cream and rum butter sauce.'],['Traditional Coffee Ceremony (for 4)','Hand-roasting ceremony with shared ice cream and coffee.'],['Ethiopian Coffee','Hand-roasted from the Yirgacheffe region.'],['Shai','Addis spiced, served hot.']],
 'Bar':[['The Woo','Tej honey wine, gin, St. Germain'],['Addis Smash','Bourbon, blueberry, lime'],['Right Bayou','Homemade Pimm\'s, infused rum'],['Fire Margarita','Infused tequila, mitmita syrup'],['Ode to Antoine','Rye, Eritrean ouzo'],['Ethiopian Martini','Ethio coffee, Amarula, vodka'],['The Prince\'s Tej','The original libation, best as a digestif'],['Wine','Red: OPP Pinot Noir, McBride Sisters Red Blend, The Prince Cabernet Sauvignon. White: Big Salt, OPP Pinot Grigio, Fountain of Youth Sauvignon, Torre Oris Cava, Pierre Jourdan Brut, Rosé.'],['Birra','Habesha Cold Gold, Abita Amber, Blue Moon, Paradise Park, Stella Artois']]
 };
-/* DEMO PRICES: placeholders so the checkout can be shown. Replace with Addis NOLA's real prices. */
-const DEMO_PRICE={'Honey Butter Baby':8,'Blueberry Pancake':13,'Avo':12,'Fir Fir':16,'Jollof Rice + Fried Egg':16,'Ethiopian Scramble':15,'Sweet Awaze Chicken & Waffles':19,'Shrimp Tibs & Grits':20,'Sambusa':8,'Shrimp Kitfo':16,'Ethiopian Salad':12,'Ethio Jollof':15,'Veggie Combo':22,'Sweet Awaze Chicken':15,'Whole Fried Red Snapper':32,'Godin Tibs':28,'Alemayehu "The World" Combo':48,'Vegan Bayenetu "Taste of Everything"':36,'Endi Endi "Oh My Goodness"':44,'Siga Bayenetu Combo':38,'Fresh Froot':9,'Addis Affogato':10,'The King\'s Bread Pudding':11,'Traditional Coffee Ceremony (for 4)':28,'Ethiopian Coffee':5,'Shai':4};
+/* REAL PRICES pulled from their HungerRush ordering site (addisnolarestaurant.com), Oct 2026. '+' items are base price; modifiers add more. Four chef's-combo plates and three dine-in desserts aren't sold online, so those still carry estimated prices pending confirmation. */
+const DEMO_PRICE={'Honey Butter Baby':4.68,'Blueberry Pancake':5.20,'Avo':12.48,'Fir Fir':12.48,'Jollof Rice + Fried Egg':16.64,'Ethiopian Scramble':13.52,'Sweet Awaze Chicken & Waffles':20.80,'Shrimp Tibs & Grits':26.00,'Sambusa':10.00,'Shrimp Kitfo':14.00,'Ethiopian Salad':15.00,'Ethio Jollof':16.00,'Veggie Combo':22.00,'Sweet Awaze Chicken':20.00,'Whole Fried Red Snapper':30.00,'Godin Tibs':33.00,'Alemayehu "The World" Combo':48,'Vegan Bayenetu "Taste of Everything"':36,'Endi Endi "Oh My Goodness"':44,'Siga Bayenetu Combo':38,'Fresh Froot':9,'Addis Affogato':10,'The King\'s Bread Pudding':11,'Traditional Coffee Ceremony (for 4)':28,'Ethiopian Coffee':5.30,'Shai':5.20};
 const PROTEIN=['Chicken','Lamb','Shrimp'],PROTEIN2=['Plain','Chicken','Fish','Shrimp'];
 const OPTS={'Fir Fir':PROTEIN,'Jollof Rice + Fried Egg':PROTEIN,'Ethiopian Scramble':PROTEIN,'Ethiopian Salad':PROTEIN2,'Ethio Jollof':PROTEIN2,'Sambusa':['Lentil','Collard greens','Beef']};
 const DINE_IN=new Set(['Ethiopian Honey Wine','Bottomless Mimosa']); /* alcohol: in-restaurant only */
