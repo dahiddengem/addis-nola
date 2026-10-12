@@ -75,7 +75,14 @@ button{font:inherit}
 #hero .tl{width:fit-content;max-width:100%}
 #hero .sub{font-size:clamp(2.1rem,8vw,4.4rem);line-height:1.05;margin-top:.5rem;text-align:left}
 @media(min-width:800px){#hero .sub{text-align:right}}
-.heroRow{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;justify-content:space-between;margin-top:28px}
+.heroRow{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;margin-top:28px}
+.ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+#openNow{display:inline-flex;align-items:center;min-height:48px;margin:0}
+/* desktop: buttons, Michelin badge and open-now pill sit on ONE centre line; the hint text drops to a second grid row under its button so it can't push the buttons up */
+@media(min-width:1100px){.heroRow{display:grid;grid-template-columns:auto auto 1fr auto;column-gap:24px;row-gap:0;align-items:center}.ctas{display:contents}.ctas>div{display:contents}
+.ctas>div:nth-child(1)>.btn{grid-area:1/1}.ctas>div:nth-child(2)>.btn{grid-area:1/2}
+.ctas .btn{justify-self:start}.ctas .note{margin-top:.6rem;max-width:18rem;align-self:start}.ctas>div:nth-child(1)>.note{grid-area:2/1}.ctas>div:nth-child(2)>.note{grid-area:2/2}
+.heroRow>.badge{grid-area:1/3;justify-self:center}.heroRow>#openNow{grid-area:1/4}}
 .badge{display:flex;gap:14px;align-items:center}
 .badge img{height:58px;background:#fff;padding:3px}
 
@@ -259,7 +266,7 @@ body.hasCart #cartbar{display:block}
     <div class="tl"><h1 class="disp reveal">Modern<br>Ethiopian</h1>
     <p class="serif sub reveal">Cuisine <span class="hl">x</span> Culture</p></div>
     <div class="heroRow reveal">
-      <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <div class="ctas">
         <div>
           <a class="btn gem-cut" href="#order">Order now</a>
           <span class="note">Pickup or delivery · Takes 2 minutes</span>
@@ -273,7 +280,7 @@ body.hasCart #cartbar{display:block}
         <img alt="Michelin recognized" id="mich" onerror="this.style.display='none'">
         <p class="mono" style="color:#ddd">Michelin-recognized<br><span style="color:var(--mute)">By Dr. Biruk Alemayehu<br>Chefs Jaime Lobo × Prince Lobo</span></p>
       </div>
-      <p id="openNow" class="mono" style="padding:10px 14px;border:1px solid rgba(255,255,255,.35)"></p>
+      <p id="openNow" class="mono" style="padding:0 14px;border:1px solid rgba(255,255,255,.35)"></p>
     </div>
   </div>
 </section>
@@ -636,8 +643,16 @@ const ITEMS=[];const ID={};
 CATS.forEach(cat=>MENU[cat].forEach(([n,d,price,g])=>{ID[n]=ITEMS.length;ITEMS.push({id:ITEMS.length,name:n,cat,desc:d,price:price||0,g:g||null,dineIn:cat==='Bar'})}));
 
 /* ---------- CART ---------- */
-let cart=[];try{cart=JSON.parse(localStorage.getItem('addis_demo_cart')||'[]').filter(l=>ITEMS[l.id])}catch(e){cart=[]}
-const save=()=>{try{localStorage.setItem('addis_demo_cart',JSON.stringify(cart))}catch(e){}};
+/* Cart is saved by dish NAME (not array position) under a versioned key, and every saved line is checked on load.
+   Older builds saved {id,opt,qty} by menu position, so a menu change made stale carts point at the wrong dish or crash the drawer. */
+const CART_KEY='addis_demo_cart_v2';
+let cart=[];try{
+  localStorage.removeItem('addis_demo_cart');
+  cart=(JSON.parse(localStorage.getItem(CART_KEY)||'[]')||[]).map(l=>({id:ID[l&&l.name],name:l&&l.name,chosen:Array.isArray(l&&l.chosen)?l.chosen.filter(c=>c&&typeof c.label==='string'&&isFinite(c.price)):[],note:typeof(l&&l.note)==='string'?l.note:'',qty:Math.floor(+(l&&l.qty))}))
+    .filter(l=>l.id!==undefined&&ITEMS[l.id]&&!ITEMS[l.id].dineIn&&l.qty>0)
+    .map(l=>({...l,key:l.id+'|'+l.chosen.map(c=>c.label).sort().join(',')+'|'+l.note}));
+}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem(CART_KEY,JSON.stringify(cart.map(({name,chosen,note,qty})=>({name,chosen,note,qty}))))}catch(e){}};
 const count=()=>cart.reduce((a,l)=>a+l.qty,0);
 const unitPrice=(it,chosen)=>it.price+(chosen||[]).reduce((a,c)=>a+c.price,0);
 const sub=()=>cart.reduce((a,l)=>a+unitPrice(ITEMS[l.id],l.chosen)*l.qty,0);
@@ -650,7 +665,7 @@ function addLine(id,chosen,note){
   chosen=chosen||[];note=note||'';
   const key=id+'|'+chosen.map(c=>c.label).sort().join(',')+'|'+note;
   const k=cart.find(l=>l.key===key);
-  if(k)k.qty++;else cart.push({id,chosen,note,qty:1,key});
+  if(k)k.qty++;else cart.push({id,name:ITEMS[id].name,chosen,note,qty:1,key});
   save();renderBar();toast(`Added ${ITEMS[id].name}`);
 }
 function addToCart(id){
@@ -807,7 +822,6 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('submit',e=>{
   if(e.target.id==='coForm'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}placeOrder()}
-  if(e.target.id==='nform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#nok').style.display='block';e.target.reset();return}
   if(e.target.id==='nform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#nok').style.display='block';e.target.reset();return}
   if(e.target.id==='cform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#cok').style.display='block'}
 });
