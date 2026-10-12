@@ -213,6 +213,14 @@ body.hasCart #cartbar{display:block}
 .pick .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .pick h5{font-family:'Archivo';font-stretch:80%;text-transform:uppercase;font-size:.78rem;color:var(--accent);margin:16px 0 2px;letter-spacing:.1em}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}#drawer{transition:none}}
+
+.rv{display:grid;gap:16px;margin-top:36px;grid-template-columns:1fr}
+@media(min-width:760px){.rv{grid-template-columns:repeat(3,1fr)}}
+.rvc{background:var(--ink3);border:1px solid var(--line);padding:22px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.rvc .st{color:var(--accent);letter-spacing:.15em}
+.rvc p{margin:12px 0;line-height:1.65}
+.rvc .who{color:var(--mute);font-size:.85rem}
+.rvhead{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:24px}
 </style>
 </head>
 <body>
@@ -221,7 +229,7 @@ body.hasCart #cartbar{display:block}
   <div class="wrap row">
     <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" src="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_196,h_268,al_c,q_90,usm_0.66_1.00_0.01/a.png" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
     <nav aria-label="Main">
-      <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
+      <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#reviews">Reviews</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
     </nav>
     <div class="navR">
       <a class="btn gem-cut sm small" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US" id="navReserve">Reserve</a>
@@ -230,7 +238,7 @@ body.hasCart #cartbar{display:block}
     </div>
   </div>
   <div id="mnav">
-    <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
+    <a href="#order">Order</a><a href="#table">The Table</a><a href="#welcome">Welcome</a><a href="#reviews">Reviews</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
     <a class="btn gem-cut" style="margin-top:14px" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
   </div>
 </header>
@@ -322,6 +330,17 @@ body.hasCart #cartbar{display:block}
     <h2 class="disp big reveal" style="max-width:15ch">A welcome to Addis NOLA is a welcome <span class="hl">back</span> home.</h2>
     <p class="reveal" style="max-width:40rem;margin-top:24px;color:var(--mute);line-height:1.7">Nestled on historic Bayou Road, New Orleans' oldest road and a cultural hub of Black-owned businesses. A space designed by OI Studio and Nomita Joshi, filled with African art. Family-owned, Black- and female-led.</p>
     <div class="mosaic" id="mosaic"></div>
+  </div>
+</section>
+
+<!-- GUEST REVIEWS -->
+<section id="reviews" class="sec">
+  <div class="wrap">
+    <p class="mono chap">Guest reviews</p>
+    <h2 class="disp big reveal">What guests <span class="hl">say</span>.</h2>
+    <div class="rvhead reveal"><span id="rvScore" class="disp" style="font-size:2rem"></span><a class="btn ghost gem-cut sm small" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Addis+NOLA+2514+Bayou+Rd+New+Orleans">Read all reviews on Google</a></div>
+    <div class="rv reveal" id="rvGrid"></div>
+    <p class="mono" style="margin-top:20px;color:var(--mute);font-size:.75rem">Reviews from Google</p>
   </div>
 </section>
 
@@ -723,6 +742,13 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const heroBg=$('#heroBg');
 let tick=false;addEventListener('scroll',()=>{if(!tick&&!reduce){tick=true;requestAnimationFrame(()=>{heroBg.style.transform=`translate3d(0,${Math.min(scrollY,900)*.18}px,0)`;tick=false})}},{passive:true});
 renderBar();
+/* GOOGLE REVIEWS: paste real reviews here exactly as written: {n:'First L.',r:5,t:'text'} and set RV_SCORE like '4.6 ★ · 500+ Google reviews' */
+const REVIEWS=[];const RV_SCORE='';
+(function(){const g=document.getElementById('rvGrid'),sc=document.getElementById('rvScore');if(!g)return;
+ sc.textContent=RV_SCORE;
+ if(!REVIEWS.length){g.parentNode.removeChild(g);const n=document.querySelector('#reviews .mono:last-child');if(n)n.remove();return}
+ const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ g.innerHTML=REVIEWS.map(v=>`<figure class="rvc" style="margin:0"><div class="st" aria-label="${v.r} out of 5 stars">${'★'.repeat(v.r)}${'☆'.repeat(5-v.r)}</div><p>“${esc(v.t)}”</p><figcaption class="who">${esc(v.n)}</figcaption></figure>`).join('')})();
 </script>
 </body>
 </html>
