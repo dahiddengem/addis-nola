@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Addis NOLA | Modern Ethiopian on Bayou Road</title>
+<meta name="description" content="Michelin-recognized modern Ethiopian cuisine on historic Bayou Road, New Orleans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BRAND TOKENS (swap here to re-theme) ============
+   Pulled from addisnola.com's own OpenTable/site setup: black #030303,
+   white, and the rose #da324f used on their buttons.
+   LOGO COLORS: lock exact hex values here once sampled from the logo file. */
+:root{
+  --ink:#030303; --ink2:#0d0d0d; --ink3:#171717; --line:#2a2a2a;
+  --white:#ffffff; --bone:#efe9e1; --mute:#a8a29a;
+  --accent:#da324f; --accent-deep:#a8203a;
+  --vh:100vh;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--bone);font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+.disp{font-family:'Archivo',Impact,sans-serif;font-stretch:72%;font-weight:800;text-transform:uppercase;letter-spacing:-.005em;line-height:.92}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500}
+.mono{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:.72rem}
+.hl{color:var(--accent)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.gem-cut{--c:10px;clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.gem-cut.sm{--c:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 1.7rem;font-weight:700;letter-spacing:.04em;text-decoration:none;background:var(--accent);color:#fff;border:0;cursor:pointer;transition:background .2s}
+.btn:hover{background:var(--accent-deep)}
+.btn.ghost{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.note{display:block;margin-top:.5rem;font-size:.8rem;color:var(--mute)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease-out,transform .9s ease-out}
+.reveal.in{opacity:1;transform:none}
+.sec{padding:84px 0;position:relative}
+.chap{display:flex;gap:.8rem;align-items:center;color:var(--accent);margin-bottom:1rem}
+.chap::after{content:"";height:1px;width:60px;background:var(--accent)}
+
+/* NAV */
+#nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,backdrop-filter .3s}
+#nav.solid{background:rgba(3,3,3,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+#nav .row{display:flex;align-items:center;justify-content:space-between;height:68px}
+#nav nav{display:none;gap:1.8rem;font-size:.85rem}
+#nav nav a{text-decoration:none;opacity:.85}#nav nav a:hover{opacity:1;color:var(--accent)}
+@media(min-width:900px){#nav nav{display:flex;align-items:center}}
+#burger{width:44px;height:44px;background:none;border:0;color:#fff;cursor:pointer}
+@media(min-width:900px){#burger{display:none}}
+#mnav{display:none;background:var(--ink);padding:8px 16px 18px;border-bottom:1px solid var(--line)}
+#mnav.open{display:block}#mnav a{display:block;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.logo{height:46px;width:auto}
+
+/* HERO */
+#hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:var(--ink)}
+#hero .bg{position:absolute;inset:-6% 0;background:url('https://static.wixstatic.com/media/85c73b_9d8ea9cc39024c9fa697d9e89956f328~mv2.jpg/v1/fill/w_1800,h_1200,al_c,q_82/a.jpg') center/cover;will-change:transform}
+#hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,3,.55) 0%,rgba(3,3,3,.15) 40%,rgba(3,3,3,.92) 100%)}
+#hero .in{position:relative;z-index:2;padding-bottom:56px;width:100%}
+#hero h1{font-size:clamp(3.4rem,13vw,10.5rem)}
+#hero .sub{font-size:clamp(1.5rem,4vw,2.6rem);margin-top:.6rem}
+.heroRow{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;justify-content:space-between;margin-top:28px}
+.badge{display:flex;gap:14px;align-items:center}
+.badge img{height:58px;background:#fff;padding:3px}
+
+/* WELCOME */
+.pair{display:grid;gap:12px;grid-template-columns:1fr 1fr;align-items:start}
+.pair img{width:100%;height:62vh;object-fit:cover}
+.pair img:nth-child(2){margin-top:64px}
+.big{font-size:clamp(2.4rem,7vw,5.6rem)}
+
+/* STRIP (pinned horizontal story) */
+#strip{position:relative}
+#strip .pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+#strip .track{display:flex;gap:14px;padding:0 5vw;will-change:transform}
+#strip .slide{flex:0 0 auto;height:68vh;position:relative}
+#strip .slide img{height:100%;width:auto;aspect-ratio:var(--ar);object-fit:cover}
+#strip .slide span{position:absolute;left:10px;bottom:8px;font-size:.7rem;color:#fff;text-shadow:0 1px 4px #000}
+#strip .head{padding:0 5vw 22px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+#bar{height:2px;background:var(--line);margin:22px 5vw 0}#bar i{display:block;height:100%;width:0;background:var(--accent)}
+.noPin #strip .pin{position:static;height:auto;padding:60px 0}
+.noPin #strip .track{overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
+.noPin #strip .slide{scroll-snap-align:center;height:60vh}
+.noPin #bar{display:none}
+
+/* PLATES */
+.plate{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden}
+.plate img.bgi{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;will-change:transform}
+.plate::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(3,3,3,.9) 0%,rgba(3,3,3,.05) 55%)}
+.plate .cap{position:relative;z-index:2;padding:0 0 44px;width:100%}
+.plate h3{font-size:clamp(2.2rem,7vw,5rem)}
+.plate p{max-width:30rem;margin-top:.6rem;color:#e8e1d8}
+
+/* MENU */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0}
+.tab{min-height:44px;padding:0 1.2rem;background:var(--ink3);color:var(--bone);border:1px solid var(--line);font:500 .9rem 'DM Sans';cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.dish{display:grid;grid-template-columns:1fr;gap:4px;padding:16px 0;border-bottom:1px solid var(--line)}
+.dish h4{font-family:'Archivo';font-stretch:80%;font-weight:700;font-size:1.2rem;text-transform:uppercase}
+.dish p{color:var(--mute);font-size:.95rem}
+@media(min-width:760px){.dish{grid-template-columns:300px 1fr;gap:28px}}
+
+/* PEOPLE */
+.people{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:900px){.people{grid-template-columns:repeat(5,1fr)}}
+.person{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--ink3)}
+.person img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15)}
+.person div{position:absolute;inset:auto 0 0 0;padding:34px 12px 12px;background:linear-gradient(0deg,rgba(3,3,3,.92),transparent)}
+.person b{display:block;font-family:'Archivo';font-stretch:78%;text-transform:uppercase;font-size:1.05rem}
+.person small{color:var(--mute);font-size:.72rem}
+
+/* JOURNAL */
+.sheet{columns:2;column-gap:10px}
+@media(min-width:760px){.sheet{columns:4}}
+.sheet a{display:block;position:relative;margin-bottom:10px;break-inside:avoid;text-decoration:none;overflow:hidden;background:var(--ink3)}
+.sheet img{width:100%;transition:transform .8s ease-out}
+.sheet a:hover img{transform:scale(1.05)}
+.sheet a span{position:absolute;inset:auto 0 0 0;padding:28px 10px 10px;background:linear-gradient(0deg,rgba(3,3,3,.92),transparent);font-size:.78rem;line-height:1.25}
+.txt{padding:16px 12px;border:1px solid var(--line);font-size:.85rem}
+.txt:hover{border-color:var(--accent)}
+
+/* CATERING */
+.cgrid{display:grid;gap:36px}@media(min-width:900px){.cgrid{grid-template-columns:1fr 1fr}}
+.steps{list-style:none;margin-top:20px;display:grid;gap:12px}
+.steps li{display:flex;gap:14px;align-items:baseline}
+.steps b{font-family:'Archivo';font-stretch:72%;font-weight:800;font-size:2.4rem;color:var(--accent);line-height:1}
+form{background:var(--ink2);border:1px solid var(--line);padding:24px}
+.fg{display:grid;gap:14px}@media(min-width:620px){.fg{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+label{display:block;font-size:.8rem;margin-bottom:4px;color:var(--mute)}
+input,select,textarea{width:100%;min-height:46px;padding:10px 12px;background:var(--ink);color:#fff;border:1px solid var(--line);font:inherit;border-radius:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.ok{display:none;margin-top:14px;padding:12px;background:#1e4d36;font-size:.9rem}
+
+/* ORDER */
+.ogrid{display:grid;gap:12px;grid-template-columns:1fr}@media(min-width:700px){.ogrid{grid-template-columns:repeat(4,1fr)}}
+.oc{display:block;padding:24px;background:var(--ink2);border:1px solid var(--line);text-decoration:none;min-height:140px;transition:border-color .2s}
+.oc:hover{border-color:var(--accent)}.oc b{font-family:'Archivo';font-stretch:76%;text-transform:uppercase;font-size:1.5rem;display:block}.oc small{color:var(--mute)}
+
+/* VISIT */
+#visit{position:relative;overflow:hidden}
+#visit .vbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.22}
+#visit .wrap{position:relative}
+table{width:100%;border-collapse:collapse}td{padding:12px 0;border-bottom:1px solid var(--line);font-size:.92rem}td:last-child{text-align:right}
+tr.today td{color:var(--accent);font-weight:700}
+.band{height:110px;background-size:cover;background-position:center;opacity:.9}
+
+footer{border-top:1px solid var(--line);padding:30px 0;font-size:.85rem;color:var(--mute)}
+footer .row{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+.credit{font-size:.72rem;opacity:.65}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:80;align-items:center;justify-content:center;padding:16px}
+.modal>div{background:var(--ink2);border:1px solid var(--line);max-width:520px;padding:28px;position:relative}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header id="nav">
+  <div class="wrap row">
+    <a href="#top" aria-label="Addis NOLA home"><img class="logo" alt="Addis NOLA logo" src="https://static.wixstatic.com/media/85c73b_5e9de19903044a1e8516eaf606dcec86~mv2.png/v1/fill/w_196,h_268,al_c,q_90/a.png" onerror="this.outerHTML='<b class=disp style=font-size:1.6rem>Addis NOLA</b>'"></a>
+    <nav aria-label="Main">
+      <a href="#welcome">Welcome</a><a href="#table">The Table</a><a href="#plates">The Plates</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#visit">Visit</a>
+      <a class="btn gem-cut sm" style="min-height:40px" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve</a>
+    </nav>
+    <button id="burger" aria-label="Open menu" aria-expanded="false"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+  <div id="mnav">
+    <a href="#welcome">Welcome</a><a href="#table">The Table</a><a href="#plates">The Plates</a><a href="#people">The People</a><a href="#journal">Journal</a><a href="#catering">Catering</a><a href="#order">Order</a><a href="#visit">Visit</a>
+    <a class="btn gem-cut" style="margin-top:14px;border:0" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="bg" id="heroBg"></div>
+  <div class="wrap in">
+    <p class="mono hl reveal">Bayou Road · New Orleans</p>
+    <h1 class="disp reveal">Modern<br>Ethiopian</h1>
+    <p class="serif sub reveal">Cuisine <span class="hl">x</span> Culture</p>
+    <div class="heroRow reveal">
+      <div>
+        <a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a>
+        <span class="note">Free to book · Confirmed instantly on OpenTable</span>
+      </div>
+      <div class="badge">
+        <img alt="Michelin recognized" src="https://static.wixstatic.com/media/85c73b_a3819fc83e34462381d8caa1fad6f7fb~mv2.jpeg/v1/fill/w_330,h_150,al_c,q_85/a.jpeg" onerror="this.style.display='none'">
+        <p class="mono" style="color:#ddd">Michelin-recognized<br><span style="color:var(--mute)">By Dr. Biruk Alemayehu<br>Chefs Jaime Lobo × Prince Lobo</span></p>
+      </div>
+      <p id="openNow" class="mono" style="padding:10px 14px;border:1px solid rgba(255,255,255,.35)"></p>
+    </div>
+  </div>
+</section>
+
+<!-- I WELCOME -->
+<section id="welcome" class="sec">
+  <div class="wrap">
+    <p class="mono chap">I · The Welcome</p>
+    <h2 class="disp big reveal" style="max-width:15ch">Welcome to Addis NOLA is a welcome <span class="hl">back</span> home.</h2>
+    <div class="pair" style="margin-top:44px">
+      <img class="reveal" loading="lazy" alt="Dish from the Addis NOLA kitchen" src="https://static.wixstatic.com/media/85c73b_9128dbf29d654222bcbd535bf90c1683~mv2.jpg/v1/fill/w_700,h_900,al_c,q_82/a.jpg">
+      <img class="reveal" loading="lazy" alt="A table spread at Addis NOLA" src="https://static.wixstatic.com/media/85c73b_dc34a96d97124c729f68db0b92da4b7c~mv2.jpg/v1/fill/w_700,h_900,al_c,q_82/a.jpg">
+    </div>
+    <p class="reveal" style="max-width:40rem;margin-top:44px;color:var(--mute);line-height:1.7">Nestled on historic Bayou Road, New Orleans' oldest road and a cultural hub of Black-owned businesses. A space designed by OI Studio and Nomita Joshi, filled with African art. Family-owned, Black- and female-led.</p>
+  </div>
+</section>
+<div class="band" style="background-image:url('https://static.wixstatic.com/media/85c73b_e6da8bb7eeba450c9643496a00e9c3f9~mv2.jpg/v1/fill/w_1600,h_420,al_c,q_80/a.jpg')" role="img" aria-label="Addis NOLA banner"></div>
+
+<!-- II THE TABLE (pinned horizontal story) -->
+<section id="table"><div id="strip">
+  <div class="pin">
+    <div class="head wrapless">
+      <div><p class="mono hl">II · The Table</p><h2 class="disp" style="font-size:clamp(2.4rem,6vw,4.6rem)">Eat with your <span class="hl">hands</span>.</h2></div>
+      <p class="mono" id="count" style="color:var(--mute)">01 / 14</p>
+    </div>
+    <div class="track" id="track"></div>
+    <div id="bar"><i id="barI"></i></div>
+  </div>
+</div></section>
+
+<!-- III THE PLATES -->
+<section id="plates">
+  <div class="wrap" style="padding-top:84px"><p class="mono chap">III · The Plates</p><h2 class="disp big reveal">Deep, rich <span class="hl">flavors</span>.</h2></div>
+  <div id="plateList" style="margin-top:44px"></div>
+  <div class="wrap sec" id="menu">
+    <p class="mono hl">The full menu</p>
+    <h2 class="disp" style="font-size:clamp(2.2rem,6vw,4rem);margin-top:6px">Everything on the <span class="hl">table</span>.</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="menuBody"></div>
+    <p style="margin-top:22px"><a class="hl" target="_blank" rel="noopener" href="https://search.picknic.app/biz/addis-nola-new-orleans">Allergen guide</a></p>
+  </div>
+</section>
+
+<!-- IV THE PEOPLE -->
+<section id="people" class="sec" style="background:var(--ink2)">
+  <div class="wrap">
+    <p class="mono chap">IV · The People</p>
+    <h2 class="disp big reveal">A cultural <span class="hl">hub</span>, run like family.</h2>
+    <div class="people reveal" id="peopleGrid" style="margin-top:40px"></div>
+    <div class="reveal" style="margin-top:40px;max-width:44rem">
+      <p style="color:var(--mute);line-height:1.7">Founder Biruk Alemayehu's journey from Ethiopia is told in her memoir, <i>I See the World: A Memoir of Culture, Resilience, and Discovery</i>. Prince Lobo curates the Ethiopian wines, tej and the traditional coffee ceremony.</p>
+      <a class="hl" style="display:inline-block;margin-top:12px;font-weight:700" target="_blank" rel="noopener" href="https://www.amazon.com/dp/B0GQ6VR26M">Read the book on Amazon</a>
+    </div>
+  </div>
+</section>
+
+<!-- V JOURNAL -->
+<section id="journal" class="sec">
+  <div class="wrap">
+    <p class="mono chap">V · The Journal</p>
+    <h2 class="disp big reveal">Notes from <span class="hl">Bayou</span> Road.</h2>
+    <p class="reveal" style="color:var(--mute);margin:14px 0 36px;max-width:36rem">Ethiopian culture, New Orleans festivals and how to feed a crowd. Twenty stories from the Addis NOLA blog.</p>
+    <div class="sheet" id="sheet"></div>
+  </div>
+</section>
+
+<!-- CATERING -->
+<section id="catering" class="sec" style="background:var(--ink2)">
+  <div class="wrap cgrid">
+    <div>
+      <p class="mono chap">VI · Catering</p>
+      <h2 class="disp big reveal">Make your event <span class="hl">unforgettable</span>.</h2>
+      <img class="reveal" loading="lazy" style="margin-top:28px;width:100%;max-height:420px;object-fit:cover" alt="Addis NOLA catering spread" src="https://static.wixstatic.com/media/85c73b_b34ac75f4a844942bb1bf811ebc7549f~mv2.jpeg/v1/fill/w_900,h_720,al_c,q_82/a.jpg">
+      <ol class="steps">
+        <li><b>1</b><span>Download the catering menu.</span></li>
+        <li><b>2</b><span>Tell us about your event.</span></li>
+        <li><b>3</b><span>Receive your quote, confirm the details and submit payment.</span></li>
+      </ol>
+      <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:14px">
+        <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://www.addisnola.com/_files/ugd/85c73b_fa78134480ae4a26ba237904a8f4681a.pdf">Download catering menu</a><span class="note">PDF · Opens in a new tab</span></div>
+        <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://www.ezcater.com/catering/addis-nola-3">Book on ezCater</a><span class="note">Instant online ordering</span></div>
+      </div>
+    </div>
+    <form id="cform" novalidate>
+      <h3 class="disp" style="font-size:2rem;margin-bottom:18px">Catering request</h3>
+      <div class="fg">
+        <div><label for="c1">Full name*</label><input id="c1" required autocomplete="name"></div>
+        <div><label for="c2">Email*</label><input id="c2" type="email" required autocomplete="email"></div>
+        <div><label for="c3">Phone*</label><input id="c3" type="tel" required autocomplete="tel"></div>
+        <div><label for="c4">Event type*</label><select id="c4"><option>Wedding</option><option>Birthday</option><option>Corporate</option><option>Other</option></select></div>
+        <div><label for="c5">Event date*</label><input id="c5" type="date" required></div>
+        <div><label for="c6">Number of guests*</label><input id="c6" type="number" min="1" required></div>
+        <div class="full"><label for="c7">Event location (address)*</label><input id="c7" required></div>
+        <div><label for="c8">Dietary restrictions or allergies?*</label><select id="c8"><option>No</option><option>Yes</option></select></div>
+        <div><label for="c9">Need staff for the event?*</label><select id="c9"><option>No</option><option>Yes</option></select></div>
+        <div class="full"><label for="c10">Notes or special requests</label><textarea id="c10" rows="3"></textarea></div>
+      </div>
+      <button class="btn gem-cut" style="width:100%;margin-top:18px" type="submit">Request my quote</button>
+      <span class="note">Takes 2 minutes · No payment yet</span>
+      <p class="ok" id="cok" role="status">Demo only: in the live build this goes straight to the Addis NOLA catering inbox.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order" class="sec">
+  <div class="wrap">
+    <p class="mono chap">VII · Order</p>
+    <h2 class="disp big reveal">Bring Bayou Road <span class="hl">home</span>.</h2>
+    <div class="ogrid" style="margin-top:34px">
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.addisnolarestaurant.com/"><b>Order direct</b><small>Straight from the kitchen</small></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.ubereats.com/store/addis-nola/WFtr66k8QeOjza79omxwlw"><b>Uber Eats</b><small>Delivery</small></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://www.doordash.com/store/addis-nola-(bayou-road)-new-orleans-789875/2614679/"><b>DoorDash</b><small>Delivery</small></a>
+      <a class="oc gem-cut" target="_blank" rel="noopener" href="https://my.loopz.io/gift-card/ce4ab0f9-84d7-4825-82c3-acb885d3e27f?locale=en-US" style="display:flex;gap:14px;align-items:center"><img alt="Addis NOLA gift card" style="width:64px;height:64px;object-fit:contain" loading="lazy" src="https://static.wixstatic.com/media/85c73b_8d6d72bb2c02488281da7fcc4fc52261~mv2.png/v1/fill/w_200,h_200,al_c,q_85/a.png" onerror="this.remove()"><span><b>Gift cards</b><small>Share the culture</small></span></a>
+    </div>
+    <div class="reveal" style="margin-top:50px;display:grid;gap:14px;grid-template-columns:1fr;max-width:760px">
+      <p class="mono hl">Brunchin' on the Bayou · Sat &amp; Sun · 11 AM to 2:30 PM</p>
+      <p style="color:var(--mute);line-height:1.7">Sweet awaze chicken and waffles, shrimp tibs and grits, honey wine and bottomless mimosas.</p>
+      <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve brunch</a><span class="note">Free to book</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section id="visit" class="sec" style="background:var(--ink2)">
+  <div class="vbg" style="background-image:url('https://static.wixstatic.com/media/22e53e_ef2ebbf33af24b7fba34e44589f3dc38~mv2.jpg/v1/fill/w_1600,h_1200,al_c,q_75/a.jpg')"></div>
+  <div class="wrap" style="display:grid;gap:44px">
+    <div>
+      <p class="mono chap">VIII · Visit</p>
+      <h2 class="disp big">Find us on <span class="hl">Bayou</span> Road.</h2>
+      <address style="font-style:normal;margin-top:22px;line-height:1.7">2514 Bayou Rd<br>New Orleans, Louisiana 70119</address>
+      <p style="margin-top:8px"><a href="tel:+15043232944">(504) 323-2944</a></p>
+      <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:14px">
+        <div><a class="btn gem-cut" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2514+Bayou+Rd+New+Orleans+LA+70119">Get directions</a><span class="note">Opens Google Maps</span></div>
+        <div><a class="btn ghost gem-cut" target="_blank" rel="noopener" href="https://www.opentable.com/booking/restref/availability?rid=1202839&lang=en-US">Reserve a table</a><span class="note">Free to book</span></div>
+      </div>
+      <p class="mono" style="margin-top:28px;display:flex;flex-wrap:wrap;gap:20px">
+        <a target="_blank" rel="noopener" href="https://www.instagram.com/addisnola">Instagram</a><a target="_blank" rel="noopener" href="https://www.facebook.com/addisnola2019">Facebook</a><a target="_blank" rel="noopener" href="https://www.tiktok.com/@addisnola">TikTok</a><a target="_blank" rel="noopener" href="https://x.com/addisnola">X</a><a target="_blank" rel="noopener" href="https://www.youtube.com/@addisnolaethiopiankitchen6559">YouTube</a>
+      </p>
+    </div>
+    <div style="max-width:520px"><h3 class="disp" style="font-size:2rem;margin-bottom:10px">Hours</h3><table id="hours"></table></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div style="display:flex;align-items:center;gap:14px">
+      <img alt="Addis NOLA emblem" style="height:46px;width:auto" loading="lazy" src="https://static.wixstatic.com/media/04b055_50c049f0303b430e82d13070e7e77e7f~mv2.jpg/v1/fill/w_200,h_188,al_c,q_85/a.jpg" onerror="this.remove()">
+      <span>© <span id="yr"></span> Addis NOLA · 2514 Bayou Rd, New Orleans, LA 70119</span>
+    </div>
+    <button style="background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;min-height:44px" onclick="openModal('privacy')">Privacy</button>
+    <span class="credit">Designed by <a target="_blank" rel="noopener" href="https://dahiddengem.com">Hidden Gem</a></span>
+  </div>
+</footer>
+
+<div id="privacy" class="modal" role="dialog" aria-modal="true" aria-label="Privacy">
+  <div><button onclick="closeModal('privacy')" aria-label="Close" style="position:absolute;top:8px;right:14px;font-size:2rem;background:none;border:0;color:#fff;cursor:pointer">&times;</button>
+  <h3 class="disp" style="font-size:2rem;margin-bottom:12px">Privacy</h3>
+  <p style="color:var(--mute);font-size:.92rem">Demo placeholder. The live site would link Addis NOLA's own privacy policy. Details entered in the catering form would be used only to answer your request.</p></div>
+</div>
+
+<script>
+const P=(id,w,h,ext)=>`https://static.wixstatic.com/media/${id}/v1/fill/w_${w},h_${h},al_c,q_82/a.${ext||'jpg'}`;
+function openModal(i){document.getElementById(i).style.display='flex'}
+function closeModal(i){document.getElementById(i).style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal('privacy')});
+document.getElementById('yr').textContent=new Date().getFullYear();
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* nav */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40),{passive:true});
+const burger=document.getElementById('burger'),mnav=document.getElementById('mnav');
+burger.onclick=()=>{const o=mnav.classList.toggle('open');burger.setAttribute('aria-expanded',o)};
+mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mnav.classList.remove('open')));
+
+/* THE TABLE: every gallery photo from the homepage */
+const G=[['85c73b_a9f2c7b1d07c494fb29a58864f7f85a7f003.jpg',368,655],['85c73b_dc37f5d3b9b64ca489c985b65c3e54a4~mv2.jpg',524,655],['85c73b_507ac152d1c147949e39b278360d32fd~mv2.jpg',526,655],['85c73b_10851c09312444a5b07c142bda63938f~mv2.jpg',410,512],['85c73b_bb77fbf87e9646a885f4175cfb50a69c~mv2.jpg',592,512],['85c73b_a24bac30910e4476a76ebbc2f0f8a7db~mv2.jpg',416,512],['85c73b_b0be161d8a0a40e883428b7bb0baf59f~mv2.jpg',336,418],['85c73b_d1ecfbcfd1154103896a11479a2c8e09~mv2.jpg',336,418],['85c73b_73863d5db4ac471fa01a186632b5317c~mv2.jpg',746,418],['85c73b_7a05929da8b64bc790eea96ee806a3b8~mv2.jpg',536,670],['85c73b_9a050e60a70640c4917106e3d3dfcbb5~mv2.jpg',503,670],['85c73b_6c8207c9bcdb4105b6d40886ed5cfae5f003.jpg',379,670],['85c73b_81ff170fd8734c36ad849692ce36c59b~mv2.jpg',819,819],['85c73b_afc489a8a14643548b569fe405b6d109~mv2.jpg',615,819]];
+const track=document.getElementById('track');
+track.innerHTML=G.map(([id,w,h],i)=>`<div class="slide gem-cut" style="--ar:${w}/${h}"><img loading="lazy" alt="Addis NOLA photo ${i+1} of ${G.length}" src="${P(id,Math.round(w*1.3),Math.round(h*1.3))}" onerror="this.closest('.slide').remove()"><span class="mono">${String(i+1).padStart(2,'0')}</span></div>`).join('');
+
+/* pinned horizontal scroll (desktop, motion allowed) */
+const strip=document.getElementById('strip'),pin=strip.querySelector('.pin'),bar=document.getElementById('barI'),count=document.getElementById('count');
+let pinned=false;
+function setupStrip(){
+  pinned=!reduce&&innerWidth>=800;
+  document.body.classList.toggle('noPin',!pinned);
+  if(!pinned){strip.style.height='auto';track.style.transform='';return}
+  const dist=track.scrollWidth-innerWidth+0;
+  strip.style.height=(innerHeight+Math.max(dist,0))+'px';
+  updateStrip();
+}
+function updateStrip(){
+  if(!pinned)return;
+  const r=strip.getBoundingClientRect(),total=strip.offsetHeight-innerHeight;
+  const p=Math.min(1,Math.max(0,-r.top/total)),dist=track.scrollWidth-innerWidth;
+  track.style.transform=`translate3d(${-p*dist}px,0,0)`;
+  bar.style.width=(p*100)+'%';
+  const n=Math.min(G.length,Math.max(1,Math.round(p*(G.length-1))+1));
+  count.textContent=String(n).padStart(2,'0')+' / '+G.length;
+}
+
+/* THE PLATES: dish photos as full-bleed chapters */
+const PLATES=[
+ ['Sambusa','Two hand pies with lentils, collard greens or beef.','85c73b_f8a8155d2a424c28b21a23536bee530c~mv2.jpeg'],
+ ['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.','85c73b_d150e074ac9044688ad1b1432a48620c~mv2.jpeg'],
+ ['Jollof Rice + Fried Egg','Jollof rice, a fried egg, and your choice of chicken, lamb or shrimp.','85c73b_a316bd795d63478db8da3f125eb1da98~mv2.jpg'],
+ ['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish, served together.','85c73b_e8abaa2c67be4ff597c165b720aa3900~mv2.jpg'],
+ ['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.','85c73b_8577be4ba70047659c3ab2647e702687~mv2.jpg'],
+ ['Ethiopian Salad','Romaine, tomato, onion and lemon vinaigrette.','85c73b_bc3bdb7729e84915b69851fdbca14e5e~mv2.jpeg'],
+ ['Egusi &amp; Collards','Happy hour bites with injera chips.','85c73b_a65aaf02e1d3461da082fca29c50e52e~mv2.webp'],
+ ['The Veggie Table','Plant-forward and made with fresh ingredients.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg']
+];
+document.getElementById('plateList').innerHTML=PLATES.map((d,i)=>`<section class="plate"><img class="bgi" loading="lazy" alt="${d[0].replace(/&amp;/g,'and')}" src="${P(d[2],1600,1100)}" onerror="this.closest('.plate').remove()"><div class="wrap cap"><p class="mono hl">${String(i+1).padStart(2,'0')}</p><h3 class="disp">${d[0]}</h3><p>${d[1]}</p></div></section>`).join('');
+
+/* MENU */
+const MENU={
+'Brunch':[['Honey Butter Baby','Focaccia bread + honey butter'],['Blueberry Pancake','Blueberry pancakes served with your choice of syrup.'],['Avo','Avocado spread over Leo\'s Bread'],['Fir Fir','Traditional Ethiopian dish with chicken, lamb or shrimp.'],['Jollof Rice + Fried Egg','Jollof rice, fried egg, and chicken, lamb or shrimp.'],['Ethiopian Scramble','Scrambled eggs with chicken, lamb or shrimp.'],['Sweet Awaze Chicken & Waffles','Crispy waffles with sweet awaze chicken.'],['Shrimp Tibs & Grits','Shrimp tibs over creamy grits.'],['Ethiopian Honey Wine','A glass of authentic Ethiopian honey wine.'],['Bottomless Mimosa','Hibiscus, pineapple, orange or mango.']],
+'Dinner':[['Sambusa','Two hand pies with lentils, collard greens or beef.'],['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.'],['Ethiopian Salad','Romaine, tomato, onion, lemon vinaigrette; add chicken, fish or shrimp.'],['Ethio Jollof','Jasmine rice, berbere, red onion, tomato; add chicken, fish or shrimp.'],['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.'],['Sweet Awaze Chicken','Shared wings in sweet awaze sauce.'],['Whole Fried Red Snapper','Jasmine rice, shiro and mitmita.'],['Godin Tibs','Beef short ribs sautéed with onions and tomatoes.'],['Alemayehu "The World" Combo','Chef\'s combination platter.'],['Vegan Bayenetu "Taste of Everything"','Vegan combination platter.'],['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish.'],['Siga Bayenetu Combo','Combination platter.']],
+'Dessert':[['Fresh Froot','The Froot Orleans fruit bowl.'],['Addis Affogato','Homemade vanilla ice cream, Oreo crumble, Ethiopian coffee.'],['The King\'s Bread Pudding','Vanilla ice cream and rum butter sauce.'],['Traditional Coffee Ceremony (for 4)','Hand-roasting ceremony with shared ice cream and coffee.'],['Ethiopian Coffee','Hand-roasted from the Yirgacheffe region.'],['Shai','Addis spiced, served hot.']],
+'Bar':[['The Woo','Tej honey wine, gin, St. Germain'],['Addis Smash','Bourbon, blueberry, lime'],['Right Bayou','Homemade Pimm\'s, infused rum'],['Fire Margarita','Infused tequila, mitmita syrup'],['Ode to Antoine','Rye, Eritrean ouzo'],['Ethiopian Martini','Ethio coffee, Amarula, vodka'],['The Prince\'s Tej','The original libation, best as a digestif'],['Wine','Red: OPP Pinot Noir, McBride Sisters Red Blend, The Prince Cabernet Sauvignon. White: Big Salt, OPP Pinot Grigio, Fountain of Youth Sauvignon, Torre Oris Cava, Pierre Jourdan Brut, Rosé.'],['Birra','Habesha Cold Gold, Abita Amber, Blue Moon, Paradise Park, Stella Artois']]
+};
+const tabs=document.getElementById('tabs'),mb=document.getElementById('menuBody');
+function showMenu(n){tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===n));mb.innerHTML=MENU[n].map(d=>`<div class="dish"><h4>${d[0]}</h4><p>${d[1]}</p></div>`).join('')}
+Object.keys(MENU).forEach(n=>{const b=document.createElement('button');b.className='tab gem-cut sm';b.textContent=n;b.dataset.t=n;b.setAttribute('role','tab');b.onclick=()=>showMenu(n);tabs.appendChild(b)});
+showMenu('Dinner');
+
+/* THE PEOPLE */
+const PPL=[['Biruk Alemayehu, PhD','Founder','85c73b_39c27cf456cd4808a3f83a1f212d6a1e~mv2.jpg','jpg'],['Jaime Lobo','Chef / General Manager','85c73b_86cbd808ec3541ac8002d3c18c2b5add~mv2.jpg','jpg'],['Prince Lobo','General Manager / Chef','85c73b_9bbcc6a8b33d42a7b121ed57f8f49725~mv2.jpg','jpg'],['Blaze Williams Jr.','Assistant Manager / Server','5fe41e_4edc43f8834b415fa43ddfa2ed9541fe~mv2.png','png'],['Robert Manos','Server','85c73b_b38f8fd3377941a295ff115d1bdf5c19~mv2.jpg','jpg']];
+document.getElementById('peopleGrid').innerHTML=PPL.map(p=>`<div class="person gem-cut"><img loading="lazy" alt="${p[0]}, ${p[1]}" src="${P(p[2],480,640,p[3])}" onerror="this.remove()"><div><b>${p[0]}</b><small class="mono">${p[1]}</small></div></div>`).join('');
+
+/* JOURNAL: all 20 posts, with every article photo */
+const B='https://www.addisnola.com/post/';
+const J=[
+['7 Unique Traditions That Make Ethiopian New Year Special','7-unique-traditions-that-make-ethiopian-new-year-celebrations-special','6fc4b0_5a89c33dd4d7411ebd0af3bbabe86f1f~mv2.jpg',980,980],
+['Understanding Injera: Ethiopia\'s Staple Food','understanding-injera-the-cultural-and-culinary-significance-of-ethiopia-s-staple-food','85c73b_95c4777958bf4ad5a04ca1d8a4289439~mv2.jpg',980,784],
+['A Beginner\'s Guide to Enjoying Ethiopian Cuisine','a-beginner-s-guide-to-enjoying-ethiopian-cuisine-for-the-first-time','503e99_5df25805a0fe4b4ab0a53ce59943c73a~mv2.png',740,423,'png'],
+['Where to Eat Between Sets at French Quarter Fest & Jazz Fest','where-to-eat-between-sets-at-french-quarter-fest-jazz-fest','8f32a3_107e71da44e348e798c02d9a15579582~mv2.jpg',980,735],
+['The Significance of Meskel and New Year in Ethiopian Culture','the-significance-of-meskel-and-new-year-in-ethiopian-culture','cb5b7c_63f4ae19033d4f77b02248b47b7743fe~mv2.jpeg',980,653],
+['What Are the Traditional Ethiopian Christmas Foods?','what-are-the-traditional-ethiopian-christmas-foods','cb5b7c_e88316750caa491db8eeecfbfe65877b~mv2.jpeg',980,980],
+['What Sets Timket Food Apart?','what-sets-timket-food-apart-traditional-ethiopian-recipes','cb5b7c_aec8088861b9482e9b827e34a98419ec~mv2.jpeg',980,735],
+['Plan Your Epic Mardi Gras Celebration in New Orleans','plan-your-epic-mardi-gras-celebration-in-new-orleans','cb5b7c_0400fb2b03bf453a83802820c2881205~mv2.jpeg',980,656],
+['Experience Essence Fest 2025: Top Things to Do','experience-essence-fest-2025-in-new-orleans-top-things-to-do','cb5b7c_e51a31c2580a4c73bc87d92451015e5e~mv2.jpeg',980,654],
+['How NOLA Showcases Its Food Heritage at Festivals','how-nola-showcases-its-food-heritage-at-festivals','cb5b7c_be37605e4d424687bb1bc61357f08418~mv2.jpeg',980,653],
+['Why New Orleans Is the Perfect Destination for Thanksgiving','why-new-orleans-is-the-perfect-destination-for-thanksgiving','cb5b7c_d23456cd26ef47baaf9233d454439897~mv2.jpeg',980,653],
+['Hungry for Adventure? Top U.S. Food Fests','hungry-for-adventure-check-out-these-top-u-s-food-fests','cb5b7c_1f8c7c99b10641f3bc8cf263a427dc7c~mv2.jpeg',980,688],
+['Ideas for Celebrating the New School Year in Style','ideas-for-celebrating-the-new-school-year-in-style','cb5b7c_5aa154bbb2b5453f8a8d0bfed71ab06e~mv2.jpeg',980,654],
+['Expert Tips for a Successful Corporate Event','expert-tips-for-a-successful-corporate-event-catering','cb5b7c_11c6aa3230814389be8287cf5dc99901~mv2.jpeg',980,654],
+['How to Cater for Different Types of Special Occasions','how-to-cater-for-different-types-of-special-occasions','cb5b7c_281d628fa87e49b6bed40726e6c8a9ed~mv2.jpg',980,600],
+['Discover the Delicious Diversity of Ethiopian Cuisine','discover-the-delicious-diversity-of-ethiopian-cuisine'],
+['Savor Ethiopian Heritage: Genna and Timket in New Orleans','savor-ethiopian-heritage-genna-and-timket-celebrations-in-new-orleans'],
+['What Makes Addis NOLA a Must Visit During Mardi Gras?','what-makes-addis-nola-a-must-visit-during-mardi-gras'],
+['Why Choose Ethiopian Food Catering for Your Next Event?','why-choose-ethiopian-food-catering-for-your-next-event'],
+['Explore Ethiopian Food and Culture: A Delicious Journey','explore-ethiopian-food-and-culture-a-delicious-journey']
+];
+document.getElementById('sheet').innerHTML=J.map(j=>j[2]
+ ?`<a class="gem-cut sm" target="_blank" rel="noopener" href="${B+j[1]}"><img loading="lazy" alt="${j[0].replace(/"/g,'')}" src="${P(j[2],600,Math.round(600*j[4]/j[3]),j[5])}" onerror="this.closest('a').className='txt';this.remove()"><span>${j[0]}</span></a>`
+ :`<a class="txt" target="_blank" rel="noopener" href="${B+j[1]}">${j[0]}</a>`).join('');
+
+/* catering form: demo only */
+document.getElementById('cform').addEventListener('submit',e=>{e.preventDefault();const f=e.target;if(!f.checkValidity()){f.reportValidity();return}document.getElementById('cok').style.display='block'});
+
+/* hours + open now (America/Chicago) */
+const H=[['Sunday','11 AM–3 PM & 5–10 PM',[[11,15],[17,22]]],['Monday','5–9:30 PM',[[17,21.5]]],['Tuesday','Closed',[]],['Wednesday','5–9:30 PM',[[17,21.5]]],['Thursday','5–9:30 PM',[[17,21.5]]],['Friday','5–10 PM',[[17,22]]],['Saturday','11 AM–3 PM & 5–10 PM',[[11,15],[17,22]]]];
+const pt=new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',weekday:'long',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
+const day=pt.find(p=>p.type==='weekday').value,hr=(+pt.find(p=>p.type==='hour').value%24)+(+pt.find(p=>p.type==='minute').value)/60;
+document.getElementById('hours').innerHTML=H.map(r=>`<tr class="${r[0]===day?'today':''}"><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+const td=H.find(r=>r[0]===day);document.getElementById('openNow').textContent=td&&td[2].some(([a,b])=>hr>=a&&hr<b)?'Open now':'Closed right now';
+
+/* motion */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const heroBg=document.getElementById('heroBg');
+function parallax(){
+  if(reduce)return;
+  heroBg.style.transform=`translate3d(0,${Math.min(scrollY,900)*.18}px,0)`;
+  document.querySelectorAll('.plate').forEach(p=>{const r=p.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const k=(r.top+r.height/2-innerHeight/2)/innerHeight;p.querySelector('.bgi').style.transform=`translate3d(0,${k*-60}px,0)`});
+}
+let tick=false;addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(()=>{updateStrip();parallax();tick=false})}},{passive:true});
+addEventListener('resize',setupStrip);addEventListener('load',setupStrip);setupStrip();parallax();
+</script>
+</body>
+</html>
