@@ -38,6 +38,8 @@ button{font:inherit}
 .gem-cut.sm{--c:6px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 1.7rem;font-weight:700;letter-spacing:.04em;text-decoration:none;background:var(--accent);color:#fff;border:0;cursor:pointer;transition:background .2s}
 .btn:hover{background:var(--accent-deep)}
+.btn:disabled{background:var(--ink3);color:var(--mute);cursor:not-allowed}
+.btn:disabled:hover{background:var(--ink3)}
 .btn.ghost{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 .btn.ghost:hover{background:rgba(255,255,255,.1)}
 .btn.small{min-height:44px;padding:0 1.1rem;font-size:.88rem}
@@ -210,8 +212,10 @@ body.hasCart #cartbar{display:block}
 .sum{display:grid;gap:6px;font-size:.92rem;margin:14px 0}
 .sum div{display:flex;justify-content:space-between}
 .sum .tot{font-weight:700;font-size:1.1rem;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
-.opt{display:block;width:100%;text-align:left;padding:0 16px;min-height:50px;margin-top:8px;background:var(--ink);color:var(--bone);border:1px solid var(--line);cursor:pointer}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;padding:0 16px;min-height:50px;margin-top:8px;background:var(--ink);color:var(--bone);border:1px solid var(--line);cursor:pointer;font:inherit}
 .opt:hover{border-color:var(--accent)}
+.opt[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt .price{color:inherit;opacity:.85}
 .pick .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .pick h5{font-family:'Archivo';font-stretch:80%;text-transform:uppercase;font-size:.78rem;color:var(--accent);margin:16px 0 2px;letter-spacing:.1em}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}#drawer{transition:none}}
@@ -517,56 +521,197 @@ const burger=$('#burger'),mnav=$('#mnav');
 burger.onclick=()=>{const o=mnav.classList.toggle('open');burger.setAttribute('aria-expanded',o)};
 mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mnav.classList.remove('open')));
 
-/* ---------- MENU DATA (real items from addisnola.com/menu; their site lists no prices) ---------- */
+/* ---------- MENU DATA ----------
+   Pulled live from their real ordering system (Menufy, at addisnolarestaurant.com), Oct 2026:
+   every category, item, real price and modifier group below matches what a guest actually sees
+   there. Reusable modifier groups (sides/extras, doneness) mirror the exact groups Menufy attaches
+   to their combo plates. The four chef's-combo plates and six desserts aren't sold through Menufy
+   (kitchen-only / dine-in), so those keep estimated prices, flagged below and on the page. */
+const SIDES_EXTRAS=['Add Sides & Extras',2,false,[['Injera',0],['Rice',0],['Jollof Rice Side',5],['Extra Injera',2.07],['Extra Rice',4],['Collard Greens',0],['Yellow Split Peas',0],['Cabbage',0],['Red Lentils',0],['Shiro',0],['Beets',0],['Green Lentils',0],['Egg',0],['Extra Mitmita',1.56],['Extra Awaze',1.56],['Extra Meat',14],['Extra Wot',6],['Cheese',0],['Extra Salad',4]]];
+const DONENESS=['Doneness',1,false,[['Raw',0],['Medium Cooked',0],['Leb Leb',0],['Medium Well',0],['Well Cooked',0]]];
+const CATS=['Brunch','Starters','Specialties','Vegan','Tibs','Wot','Beverages','Sides','Dessert','Bar','Shop'];
 const MENU={
-'Brunch':[['Honey Butter Baby','Focaccia bread + honey butter'],['Blueberry Pancake','Blueberry pancakes served with your choice of syrup.'],['Avo','Avocado spread over Leo\'s Bread'],['Fir Fir','Traditional Ethiopian dish with chicken, lamb or shrimp.'],['Jollof Rice + Fried Egg','Jollof rice, fried egg, and chicken, lamb or shrimp.'],['Ethiopian Scramble','Scrambled eggs with chicken, lamb or shrimp.'],['Sweet Awaze Chicken & Waffles','Crispy waffles with sweet awaze chicken.'],['Shrimp Tibs & Grits','Shrimp tibs over creamy grits.'],['Ethiopian Honey Wine','A glass of authentic Ethiopian honey wine.'],['Bottomless Mimosa','Hibiscus, pineapple, orange or mango.']],
-'Dinner':[['Sambusa','Two hand pies with lentils, collard greens or beef.'],['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.'],['Ethiopian Salad','Romaine, tomato, onion, lemon vinaigrette; add chicken, fish or shrimp.'],['Ethio Jollof','Jasmine rice, berbere, red onion, tomato; add chicken, fish or shrimp.'],['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.'],['Sweet Awaze Chicken','Shared wings in sweet awaze sauce.'],['Whole Fried Red Snapper','Jasmine rice, shiro and mitmita.'],['Godin Tibs','Beef short ribs sautéed with onions and tomatoes.'],['Alemayehu "The World" Combo','Chef\'s combination platter.'],['Vegan Bayenetu "Taste of Everything"','Vegan combination platter.'],['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish.'],['Siga Bayenetu Combo','Combination platter.']],
-'Dessert':[['Fresh Froot','The Froot Orleans fruit bowl.'],['Addis Affogato','Homemade vanilla ice cream, Oreo crumble, Ethiopian coffee.'],['The King\'s Bread Pudding','Vanilla ice cream and rum butter sauce.'],['Traditional Coffee Ceremony (for 4)','Hand-roasting ceremony with shared ice cream and coffee.'],['Ethiopian Coffee','Hand-roasted from the Yirgacheffe region.'],['Shai','Addis spiced, served hot.']],
-'Bar':[['The Woo','Tej honey wine, gin, St. Germain'],['Addis Smash','Bourbon, blueberry, lime'],['Right Bayou','Homemade Pimm\'s, infused rum'],['Fire Margarita','Infused tequila, mitmita syrup'],['Ode to Antoine','Rye, Eritrean ouzo'],['Ethiopian Martini','Ethio coffee, Amarula, vodka'],['The Prince\'s Tej','The original libation, best as a digestif'],['Wine','Red: OPP Pinot Noir, McBride Sisters Red Blend, The Prince Cabernet Sauvignon. White: Big Salt, OPP Pinot Grigio, Fountain of Youth Sauvignon, Torre Oris Cava, Pierre Jourdan Brut, Rosé.'],['Birra','Habesha Cold Gold, Abita Amber, Blue Moon, Paradise Park, Stella Artois']]
+'Brunch':[
+ ['Honey Butter Baby','Focaccia bread + honey butter.',4.68],
+ ['Blueberry Pancake','Served with your choice of syrup.',5.20],
+ ['Avo','Avocado spread over Leo\'s Bread.',12.48],
+ ['Fir Fir','Sautéed injera scramble. Add a protein.',12.48,[['Add Extra Meat',1,false,[['Shrimp',9],['Lamb',8],['Chicken',6]]]]],
+ ['Jollof Rice + Fried Eggs','Jollof rice and fried eggs. Add a protein.',16.64,[['Add Extra Meat',1,false,[['Shrimp',9],['Lamb',8],['Chicken',6]]]]],
+ ['Afro Toast','',13.52],
+ ['Ethiopian Scramble','Scrambled eggs. Add a protein.',13.52,[['Add Extra Meat',1,false,[['Shrimp',9],['Lamb',8],['Chicken',6]]]]],
+ ['Sweet Awaze Chicken & Waffles','Crispy waffles with sweet awaze chicken.',20.80],
+ ['Shrimp Tibs & Grits','Shrimp tibs over creamy grits.',26.00],
+ ['Addis Ribeye + Fried Egg','',33.28],
+ ['Waffle (Side)','',6.24],['Wing Special (5 Piece)','',10.40],['Grits (Side)','',6.24],['Fried Eggs (Side)','',5.20],
+ ['Hibiscus Mimosa','Hibiscus, pineapple, orange or mango.',10.40],['House Sangria','',11.23],['Fruit Juice','',4.16]
+],
+'Starters':[
+ ['Egusi Empanada','',11.00],
+ ['Sambusa','Hand pies filled with lentils, beef or collard greens.',10.00,[['Choose Your Filling',1,false,[['Lentil',0],['Beef',0],['Collard Greens',0]]]]],
+ ['Addis Special','Prime ground beef marinated with herbal butter, served raw, mixed with mitmita and Ethiopian cheese.',15.00,[DONENESS]],
+ ['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.',14.00],
+ ['Addis Ethiopian Salad','House salad with onions, tomatoes, jalapenos and homemade dressing.',15.00,[['Salad Protein',1,false,[['Chicken',5],['Fish',6],['Shrimp',10]]]]],
+ ['Ethio Jollof','Jasmine rice, berbere, red onion, tomato.',16.00,[['Add a Protein',1,false,[['Chicken',5],['Beef',6],['Fish',6],['Lamb',8],['Shrimp',10]]]]],
+ ['Sweet Awaze Chicken Wings (8 Piece)','',20.00],
+ ['Mini Kitfo','',17.68,[DONENESS]]
+],
+'Specialties':[
+ ['Traditional Kitfo','Prime ground beef marinated with herbal butter. Traditionally served raw. Side collard & ayib.',26.00,[DONENESS,SIDES_EXTRAS]],
+ ['Vegan Monday Special','',20.80],
+ ['Addis Ribeye Steak','Salad, injera, rice.',40.00,[SIDES_EXTRAS]],
+ ['Veggie Combo (No Green Lentils)','Red lentils, collard greens, yellow split peas, beets, cabbage, potatoes and carrots. Served with injera.',22.00,[SIDES_EXTRAS]],
+ ['Mar Mitmita Shrimp','Honey glazed shrimp.',30.16,[SIDES_EXTRAS]],
+ ['Golden Tibs | Short Rib','Prime short ribs grilled with onions, tomatoes, jalapenos and rosemary. Ethio salad, jasmine rice & injera.',33.00,[SIDES_EXTRAS]],
+ ['Whole Slow Fried Snapper','Jasmine rice, shiro and mitmita.',30.00,[['Upsize',1,false,[['1.5 lb.',8.50],['2 lb.',16],['3 lb.',30]]],SIDES_EXTRAS]],
+ ['Whole Fried Tilapia','',22.88,[SIDES_EXTRAS]],
+ ['Mini Honey Wine Bottle (6 Oz.)','',31.80,[['Serving',1,true,[['Glass',11],['Bottle',45]]]]],
+ ['Special Kitfo','',25.00,[DONENESS]],
+ ['Alemayehu "The World" Combo','Chef\'s combination platter. Not on the online ordering menu — price is an estimate.',48],
+ ['Vegan Bayenetu "Taste of Everything"','Vegan combination platter. Not on the online ordering menu — price is an estimate.',36],
+ ['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish. Not on the online ordering menu — price is an estimate.',44],
+ ['Siga Bayenetu Combo','Combination platter. Not on the online ordering menu — price is an estimate.',38]
+],
+'Vegan':[
+ ['The Nelson Mandela','Veggie combo, shiro, salad, 2 injera.',30.00,[SIDES_EXTRAS]],
+ ['Shiro','Ethiopian chickpeas stewed with tomato sauce and spices.',14.56,[SIDES_EXTRAS]],
+ ['Red Lentils','Cooked with onions, garlic, ginger and berbere.',14.56,[SIDES_EXTRAS]],
+ ['Collard Greens','Cooked with ginger, garlic, onions and spices.',14.56,[SIDES_EXTRAS]],
+ ['Yellow Split Peas','With garlic, onions, ginger and jalapeno.',14.56,[SIDES_EXTRAS]],
+ ['Cabbage with Carrots','Shredded cabbage, carrots and onions with spices.',14.56,[SIDES_EXTRAS]],
+ ['Beets','',14.56,[SIDES_EXTRAS]]
+],
+'Tibs':[
+ ['Tibs (Side)','Pokito Pokito.',12.00],
+ ['Mushroom Tibs','',18.00,[SIDES_EXTRAS]],
+ ['Fish Tibs','Tilapia sautéed with garlic, ginger, onions, tomatoes, jalapenos and herbal butter.',24.00,[SIDES_EXTRAS]],
+ ['Chicken Tibs','Sautéed with onions, tomatoes, jalapeno and homemade herbal butter.',23.00,[SIDES_EXTRAS]],
+ ['Beef Tibs','Lean cubes sautéed with onions, tomatoes, jalapeno and herbal butter.',24.00,[SIDES_EXTRAS]],
+ ['Awaze Tibs','Cooked in a spice stew with onions, tomatoes and jalapenos.',25.00,[SIDES_EXTRAS]],
+ ['Chicken with Spinach Tibs','Sautéed with onions, tomatoes, jalapenos and homemade sauce.',25.00,[SIDES_EXTRAS]],
+ ['Lamb Tibs','Tender cubes sautéed with onions, tomatoes, jalapeno and herbal butter.',26.00,[SIDES_EXTRAS]],
+ ['Shrimp Tibs','',27.00,[SIDES_EXTRAS]],
+ ['Ribeye Tibs','',17.68,[SIDES_EXTRAS]]
+],
+'Wot':[
+ ['Sweet Potato Wot','',18.72,[SIDES_EXTRAS]],
+ ['Fish Wot','Slowly simmered with caramelized onions in a blend of robust spices.',24.00,[SIDES_EXTRAS]],
+ ['Lamb Wot','Ethiopian lamb stew, caramelized onions, robust spices.',26.00,[SIDES_EXTRAS]],
+ ['Doro Wot','Ethiopian chicken stew, caramelized onions, robust spices, served with a boiled egg.',25.00,[SIDES_EXTRAS]],
+ ['Shrimp Wot','',30.16,[SIDES_EXTRAS]],
+ ['Beef Wot','',26.00,[SIDES_EXTRAS]]
+],
+'Beverages':[
+ ['Coconut Water Drink','',10.40],['Ginger Beer','',6.24],['Bars Mocktail','',10.40],['Sparkling Water','',6.24],
+ ['Soft Drink','',2.08,[['Flavor',1,true,[['Coca-Cola',0],['Diet Coke',0],['Sprite',0],['Fanta Orange',0],['Root Beer',0],['Dr Pepper',0],['Lemonade',0],['Minute Maid Fruit Punch',0]]]]],
+ ['Hibiscus Ice Tea','',6.24],
+ ['Water','',2.08,[['Type',1,true,[['Bottled Water',0],['Topo Chico',0.52],['Perrier',0.52]]]]],
+ ['Ethiopian Hot Coffee','',5.30],['Ethiopian Spiced Hot Tea','',5.20],['Ethiopian Spiced Sweet Tea','',6.24],
+ ['Kombucha','',7.28],['John Dendy','Ethiopian Arnold Palmer.',6.24]
+],
+'Sides':[
+ ['Ayib','',3.12],['Ayib Cheese Side','',5.00],['Shiro (Side)','',5.00],['Red Lentils (Side)','',5.00],
+ ['Yellow Split Peas (Side)','',5.00],['Collard Greens (Side)','',5.00],['Cabbage (Side)','',5.00],['Beets (Side)','',5.00],
+ ['Mitmita (Side)','',2.00],['Sweet Awaze (Side)','',2.08],['Awaze Sauce','',2.00],['Injera (Side)','',2.25],
+ ['Rice (Side)','',5.00],['Green Lentils (Side)','',4.16],['Jollof Rice (Side)','',7.00],['Salad (Side)','',5.00],
+ ['Berbere Frites','',7.00],['Berbere Fries (Small)','',5.00]
+],
+'Dessert':[
+ ['Fresh Froot','The Froot Orleans fruit bowl. Not on the online ordering menu — price is an estimate.',9],
+ ['Addis Affogato','Homemade vanilla ice cream, Oreo crumble, Ethiopian coffee. Not on the online ordering menu — price is an estimate.',10],
+ ['The King\'s Bread Pudding','Vanilla ice cream and rum butter sauce. Not on the online ordering menu — price is an estimate.',11],
+ ['Traditional Coffee Ceremony (for 4)','Hand-roasting ceremony with shared ice cream and coffee. Not on the online ordering menu — price is an estimate.',28],
+ ['Ethiopian Coffee','Hand-roasted from the Yirgacheffe region.',5.30],
+ ['Shai','Addis spiced, served hot.',5.20]
+],
+'Bar':[['The Woo','Tej honey wine, gin, St. Germain'],['Addis Smash','Bourbon, blueberry, lime'],['Right Bayou','Homemade Pimm\'s, infused rum'],['Fire Margarita','Infused tequila, mitmita syrup'],['Ode to Antoine','Rye, Eritrean ouzo'],['Ethiopian Martini','Ethio coffee, Amarula, vodka'],['The Prince\'s Tej','The original libation, best as a digestif'],['Wine','Red: OPP Pinot Noir, McBride Sisters Red Blend, The Prince Cabernet Sauvignon. White: Big Salt, OPP Pinot Grigio, Fountain of Youth Sauvignon, Torre Oris Cava, Pierre Jourdan Brut, Rosé.'],['Birra','Habesha Cold Gold, Abita Amber, Blue Moon, Paradise Park, Stella Artois']],
+'Shop':[
+ ['I SEE THE WORLD BOOK','',25.00],['Sweet Awaze Bottle (8 Oz.)','',10.40],['Yirgachefe Coffee Beans, Roasted (12 Oz.)','',15.60],
+ ['Berbere (4 Oz.)','15 spice mix.',8.32],['Mitmita (4 Oz.)','Hot spice mix.',8.32],['Frankincense','',6.24],
+ ['Kolo (1 lb.)','Roasted barley Ethiopian snack.',13.52],['Dabo Kolo (1 lb.)','Ethiopian snack.',15.60],
+ ['Jebená','Personal-size Ethiopian coffee pot.',15.60],['Ethiopian Incense Sticks','',7.28],['Ethiopian Tea Cup Set (6 Pieces)','',26.00],
+ ['Addis Hat','',26.00],['Traditional Ethiopian Men\'s Shirt','',72.80],['Traditional Ethiopian Dress','',72.80],['Gold Addis Shirt','',20.80]
+]
 };
-/* REAL PRICES pulled from their HungerRush ordering site (addisnolarestaurant.com), Oct 2026. '+' items are base price; modifiers add more. Four chef's-combo plates and three dine-in desserts aren't sold online, so those still carry estimated prices pending confirmation. */
-const DEMO_PRICE={'Honey Butter Baby':4.68,'Blueberry Pancake':5.20,'Avo':12.48,'Fir Fir':12.48,'Jollof Rice + Fried Egg':16.64,'Ethiopian Scramble':13.52,'Sweet Awaze Chicken & Waffles':20.80,'Shrimp Tibs & Grits':26.00,'Sambusa':10.00,'Shrimp Kitfo':14.00,'Ethiopian Salad':15.00,'Ethio Jollof':16.00,'Veggie Combo':22.00,'Sweet Awaze Chicken':20.00,'Whole Fried Red Snapper':30.00,'Godin Tibs':33.00,'Alemayehu "The World" Combo':48,'Vegan Bayenetu "Taste of Everything"':36,'Endi Endi "Oh My Goodness"':44,'Siga Bayenetu Combo':38,'Fresh Froot':9,'Addis Affogato':10,'The King\'s Bread Pudding':11,'Traditional Coffee Ceremony (for 4)':28,'Ethiopian Coffee':5.30,'Shai':5.20};
-const PROTEIN=['Chicken','Lamb','Shrimp'],PROTEIN2=['Plain','Chicken','Fish','Shrimp'];
-const OPTS={'Fir Fir':PROTEIN,'Jollof Rice + Fried Egg':PROTEIN,'Ethiopian Scramble':PROTEIN,'Ethiopian Salad':PROTEIN2,'Ethio Jollof':PROTEIN2,'Sambusa':['Lentil','Collard greens','Beef']};
-const DINE_IN=new Set(['Ethiopian Honey Wine','Bottomless Mimosa']); /* alcohol: in-restaurant only */
 const ITEMS=[];const ID={};
-['Brunch','Dinner','Dessert'].forEach(cat=>MENU[cat].forEach(([n,d])=>{ID[n]=ITEMS.length;ITEMS.push({id:ITEMS.length,name:n,cat,desc:d,price:DEMO_PRICE[n]||0,opts:OPTS[n]||null,dineIn:DINE_IN.has(n)})}));
+CATS.forEach(cat=>MENU[cat].forEach(([n,d,price,g])=>{ID[n]=ITEMS.length;ITEMS.push({id:ITEMS.length,name:n,cat,desc:d,price:price||0,g:g||null,dineIn:cat==='Bar'})}));
 
 /* ---------- CART ---------- */
 let cart=[];try{cart=JSON.parse(localStorage.getItem('addis_demo_cart')||'[]').filter(l=>ITEMS[l.id])}catch(e){cart=[]}
 const save=()=>{try{localStorage.setItem('addis_demo_cart',JSON.stringify(cart))}catch(e){}};
 const count=()=>cart.reduce((a,l)=>a+l.qty,0);
-const sub=()=>cart.reduce((a,l)=>a+ITEMS[l.id].price*l.qty,0);
+const unitPrice=(it,chosen)=>it.price+(chosen||[]).reduce((a,c)=>a+c.price,0);
+const sub=()=>cart.reduce((a,l)=>a+unitPrice(ITEMS[l.id],l.chosen)*l.qty,0);
 let toastT;function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('on'),1800)}
 function renderBar(){
   const n=count();document.body.classList.toggle('hasCart',n>0);
   $('#navCount').textContent=n;$('#barL').textContent=`View order · ${n} item${n===1?'':'s'}`;$('#barR').textContent=money(sub());
 }
-function addLine(id,opt){
-  const k=cart.find(l=>l.id===id&&l.opt===opt);
-  if(k)k.qty++;else cart.push({id,opt,qty:1});
+function addLine(id,chosen,note){
+  chosen=chosen||[];note=note||'';
+  const key=id+'|'+chosen.map(c=>c.label).sort().join(',')+'|'+note;
+  const k=cart.find(l=>l.key===key);
+  if(k)k.qty++;else cart.push({id,chosen,note,qty:1,key});
   save();renderBar();toast(`Added ${ITEMS[id].name}`);
 }
 function addToCart(id){
   const it=ITEMS[id];if(!it||it.dineIn)return;
-  if(it.opts){openOpt(id);return}
-  addLine(id,'');
+  if(it.g){openItemModal(id);return}
+  addLine(id,[],'');
 }
-function openOpt(id){
-  const it=ITEMS[id];$('#optTitle').textContent=it.name;
-  $('#optBody').innerHTML=`<p class="note" style="margin:0 0 8px">${it.opts===PROTEIN||it.opts===PROTEIN2?'Choose your protein':'Choose your filling'}</p>`+it.opts.map(o=>`<button class="opt" data-opt="${id}|${esc(o)}">${esc(o)}</button>`).join('');
+
+/* ---------- item modifier modal: quantity + any number of groups (max-N or 1-required), live price ---------- */
+let modalItem=null,modalSel=[],modalQty=1,modalNote='';
+function openItemModal(id){
+  modalItem=ITEMS[id];modalQty=1;modalNote='';
+  modalSel=modalItem.g.map(()=>new Set());
+  renderItemModal();
   openModal('optModal');
 }
+function modalPrice(){return modalItem.price+modalItem.g.reduce((a,grp,gi)=>a+[...modalSel[gi]].reduce((b,oi)=>b+grp[3][oi][1],0),0)}
+function renderItemModal(){
+  const it=modalItem;
+  $('#optTitle').textContent=it.name;
+  let h=it.desc?`<p class="note" style="margin:0 0 10px">${esc(it.desc)}</p>`:'';
+  h+=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:4px"><span class="lbl" style="margin:0">Quantity</span><div class="qty"><button data-mqty="-1" aria-label="Decrease quantity">&minus;</button><span>${modalQty}</span><button data-mqty="1" aria-label="Increase quantity">+</button></div></div>`;
+  it.g.forEach(([title,max,required,opts],gi)=>{
+    h+=`<p class="lbl" style="margin-top:16px">${esc(title)} <span style="color:var(--mute)">(${required?'1 required':`up to ${max}`})</span></p>`;
+    h+=opts.map(([label,price],oi)=>`<button type="button" class="opt" data-g="${gi}" data-o="${oi}" aria-pressed="${modalSel[gi].has(oi)}">${esc(label)}${price?`<span class="price">+${money(price)}</span>`:''}</button>`).join('');
+  });
+  h+=`<label class="lbl" style="margin-top:16px">Special instructions</label><textarea id="modalNote" rows="2" placeholder="Food allergy? Need something put to the side?">${esc(modalNote)}</textarea>`;
+  const unmet=it.g.some((grp,gi)=>grp[2]&&modalSel[gi].size<1);
+  h+=`<button class="btn gem-cut" style="width:100%;margin-top:16px" id="modalAdd" ${unmet?'disabled':''}>Add to order · ${money(modalPrice()*modalQty)}</button>`;
+  $('#optBody').innerHTML=h;
+}
+function toggleModalOpt(gi,oi){
+  const grp=modalItem.g[gi],max=grp[1],sel=modalSel[gi];
+  if(sel.has(oi)){sel.delete(oi)}
+  else if(max===1){sel.clear();sel.add(oi)}
+  else if(sel.size<max){sel.add(oi)}
+  else{toast(`Up to ${max} selections`);return}
+  renderItemModal();
+}
+function confirmModalAdd(){
+  const it=modalItem;
+  const chosen=[];
+  it.g.forEach(([title,max,required,opts],gi)=>modalSel[gi].forEach(oi=>chosen.push({label:opts[oi][0],price:opts[oi][1]})));
+  const note=$('#modalNote')?$('#modalNote').value.trim():'';
+  for(let i=0;i<modalQty;i++)addLine(it.id,chosen,note);
+  closeAll();
+}
+document.addEventListener('input',e=>{if(e.target.id==='modalNote')modalNote=e.target.value});
 function openPicker(){
-  let h='';['Brunch','Dinner','Dessert'].forEach(cat=>{h+=`<h5>${cat}</h5>`;ITEMS.filter(i=>i.cat===cat).forEach(i=>{
-    h+=`<div class="row"><div><b>${esc(i.name)}</b><div class="price" style="color:var(--mute)">${i.dineIn?'In-restaurant only':money(i.price)}</div></div>${i.dineIn?'<span class="tag">Dine-in</span>':`<button class="add gem-cut sm" data-add="${i.id}">Add</button>`}</div>`})});
+  let h='';CATS.forEach(cat=>{if(!MENU[cat].length)return;h+=`<h5>${esc(cat)}</h5>`;ITEMS.filter(i=>i.cat===cat).forEach(i=>{
+    h+=`<div class="row"><div><b>${esc(i.name)}</b><div class="price" style="color:var(--mute)">${i.dineIn?'In-restaurant only':money(i.price)+(i.g?'+':'')}</div></div>${i.dineIn?'<span class="tag">Dine-in</span>':`<button class="add gem-cut sm" data-add="${i.id}">Add</button>`}</div>`})});
   $('#pickBody').innerHTML=`<p class="note" style="margin:0 0 4px">Pick the dish from the photo.</p>`+h;
   openModal('pickModal');
 }
 function renderDrawer(){
   const b=$('#drawerBody'),f=$('#drawerFoot');
   if(!cart.length){b.innerHTML='<p style="color:var(--mute);padding:28px 0">Your order is empty. Tap Add to order on any plate.</p>';f.innerHTML='<button class="btn gem-cut" style="width:100%" data-close>Keep browsing</button>';return}
-  b.innerHTML=cart.map((l,i)=>{const it=ITEMS[l.id];return `<div class="line"><div><b>${esc(it.name)}</b>${l.opt?`<small>${esc(l.opt)}</small>`:''}<small>${money(it.price)} each</small></div><div style="text-align:right"><b class="price">${money(it.price*l.qty)}</b><div class="qty" style="margin-top:6px"><button data-q="${i}|-1" aria-label="Remove one">&minus;</button><span>${l.qty}</span><button data-q="${i}|1" aria-label="Add one">+</button></div></div></div>`}).join('');
+  b.innerHTML=cart.map((l,i)=>{const it=ITEMS[l.id],up=unitPrice(it,l.chosen);
+    const extras=l.chosen.length?`<small>${esc(l.chosen.map(c=>c.label).join(', '))}</small>`:'';
+    const noteHtml=l.note?`<small>“${esc(l.note)}”</small>`:'';
+    return `<div class="line"><div><b>${esc(it.name)}</b>${extras}${noteHtml}<small>${money(up)} each</small></div><div style="text-align:right"><b class="price">${money(up*l.qty)}</b><div class="qty" style="margin-top:6px"><button data-q="${i}|-1" aria-label="Remove one">&minus;</button><span>${l.qty}</span><button data-q="${i}|1" aria-label="Add one">+</button></div></div></div>`}).join('');
   f.innerHTML=`<div class="sum"><div><span>Subtotal</span><span>${money(sub())}</span></div></div><button class="btn gem-cut" style="width:100%" id="goCo">Checkout</button><span class="note">Takes 2 minutes · Nothing is charged in this demo</span>`;
 }
 
@@ -632,7 +777,7 @@ function renderCo(){
 function openCheckout(){if(!cart.length)return;$('#drawer').classList.remove('open');renderCo();openModal('coModal')}
 function placeOrder(){
   const tt=totals(),num='AN-'+(1000+Math.floor(Math.random()*9000)),when=$('#o4').value,mode=CO.mode;
-  const lines=cart.map(l=>`<div class="line"><div><b>${l.qty} × ${esc(ITEMS[l.id].name)}</b>${l.opt?`<small>${esc(l.opt)}</small>`:''}</div><b class="price">${money(ITEMS[l.id].price*l.qty)}</b></div>`).join('');
+  const lines=cart.map(l=>{const it=ITEMS[l.id],up=unitPrice(it,l.chosen);return `<div class="line"><div><b>${l.qty} × ${esc(it.name)}</b>${l.chosen.length?`<small>${esc(l.chosen.map(c=>c.label).join(', '))}</small>`:''}${l.note?`<small>“${esc(l.note)}”</small>`:''}</div><b class="price">${money(up*l.qty)}</b></div>`}).join('');
   $('#coBody').innerHTML=`<div style="text-align:center;padding:8px 0 16px"><p class="mono hl">Order ${num}</p><h3 class="disp" style="font-size:2.4rem;margin:8px 0">Thank <span class="hl">you</span>.</h3><p style="color:var(--mute)">${mode==='delivery'?'Delivery':'Pickup'}: ${esc(when)}<br>2514 Bayou Rd, New Orleans</p></div>${lines}
   <div class="sum"><div class="tot"><span>Total</span><span>${money(tt.total)}</span></div></div>
   <p class="ok" style="display:block">This was a demo: no order was sent and nothing was charged. In the live build this goes to the Addis NOLA kitchen and emails a confirmation.</p>
@@ -642,8 +787,10 @@ function placeOrder(){
 /* ---------- global click handling ---------- */
 document.addEventListener('click',e=>{
   const t=e.target.closest('button,a,[data-add],[data-close],[data-open]');if(!t)return;
-  if(t.dataset.add!==undefined){addToCart(+t.dataset.add);if($('#pickModal').classList.contains('open')&&!ITEMS[+t.dataset.add].opts){$('#pickModal').classList.remove('open');$('#shade').classList.remove('open')}return}
-  if(t.dataset.opt){const[i,o]=t.dataset.opt.split('|');$('#optModal').classList.remove('open');$('#shade').classList.remove('open');addLine(+i,o);return}
+  if(t.dataset.add!==undefined){addToCart(+t.dataset.add);if($('#pickModal').classList.contains('open')&&!ITEMS[+t.dataset.add].g){$('#pickModal').classList.remove('open');$('#shade').classList.remove('open')}return}
+  if(t.dataset.g!==undefined){toggleModalOpt(+t.dataset.g,+t.dataset.o);return}
+  if(t.dataset.mqty){modalQty=Math.max(1,modalQty+ +t.dataset.mqty);renderItemModal();return}
+  if(t.id==='modalAdd'){confirmModalAdd();return}
   if(t.dataset.q){const[i,d]=t.dataset.q.split('|'),l=cart[+i];l.qty+=+d;if(l.qty<=0)cart.splice(+i,1);save();renderBar();renderDrawer();return}
   if(t.dataset.pick!==undefined){openPicker();return}
   if(t.dataset.open){openModal(t.dataset.open);return}
@@ -670,27 +817,27 @@ const PLATES=[
  ['Endi Endi "Oh My Goodness"','Ribeye steak and crispy fried fish, served together.','85c73b_e8abaa2c67be4ff597c165b720aa3900~mv2.jpg','Endi Endi "Oh My Goodness"','jpg',1500],
  ['Sambusa','Two hand pies with lentils, collard greens or beef.','85c73b_f8a8155d2a424c28b21a23536bee530c~mv2.jpeg','Sambusa','jpeg'],
  ['Shrimp Kitfo','Herbal butter, beets, mitmita, injera chips.','85c73b_d150e074ac9044688ad1b1432a48620c~mv2.jpeg','Shrimp Kitfo','jpeg'],
- ['Jollof Rice + Fried Egg','Jollof rice, a fried egg, and your choice of chicken, lamb or shrimp.','85c73b_a316bd795d63478db8da3f125eb1da98~mv2.jpg','Jollof Rice + Fried Egg','jpg'],
- ['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.','85c73b_8577be4ba70047659c3ab2647e702687~mv2.jpg','Veggie Combo','jpg'],
- ['Ethiopian Salad','Romaine, tomato, onion and lemon vinaigrette.','85c73b_bc3bdb7729e84915b69851fdbca14e5e~mv2.jpeg','Ethiopian Salad','jpeg'],
- ['Veggie Combo','Another look at the Veggie Combo.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg','Veggie Combo','jpeg'],
+ ['Jollof Rice + Fried Eggs','Jollof rice, a fried egg, and your choice of chicken, lamb or shrimp.','85c73b_a316bd795d63478db8da3f125eb1da98~mv2.jpg','Jollof Rice + Fried Eggs','jpg'],
+ ['Veggie Combo','Red lentils, yellow split peas, collard greens, cabbage, beets, green lentils.','85c73b_8577be4ba70047659c3ab2647e702687~mv2.jpg','Veggie Combo (No Green Lentils)','jpg'],
+ ['Addis Ethiopian Salad','Romaine, tomato, onion and lemon vinaigrette.','85c73b_bc3bdb7729e84915b69851fdbca14e5e~mv2.jpeg','Addis Ethiopian Salad','jpeg'],
+ ['Veggie Combo','Another look at the Veggie Combo.','85c73b_5500e5cf09f44e0cac2bf1faae61ce80~mv2.jpeg','Veggie Combo (No Green Lentils)','jpeg'],
  ['Egusi & Collards','Happy hour bites with injera chips. Ask your server.','85c73b_a65aaf02e1d3461da082fca29c50e52e~mv2.webp',null,'webp']
 ];
 const FIT=(id,w,ext,cap)=>{const s=cap?Math.min(DPR,cap/w):DPR;return `${WIX}${id}/v1/fit/w_${Math.round(w*s)},h_${Math.round(w*s*2)},q_90,usm_0.66_1.00_0.01/a.${ext||'jpg'}`};
 const f=PLATES[0],fi=ITEMS[ID[f[3]]];
-$('#feat').innerHTML=`<div class="fimg"><img alt="${esc(f[0])}" src="${FIT(f[2],640,f[4],f[5])}" onerror="this.closest('.feat').remove()"></div><div><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:18px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}</span></div></div>`;
-$('#cards').innerHTML=PLATES.slice(1).map(p=>{const it=p[3]!=null?ITEMS[ID[p[3]]]:null;return `<article class="card gem-cut"><div class="im"><img loading="lazy" alt="${esc(p[0])}" src="${P(p[2],300,375,p[4])}" onerror="this.closest('.card').remove()"></div><div class="tx"><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p><div class="buy">${it?`<span class="price">${money(it.price)}</span><button class="add gem-cut sm" data-add="${it.id}">Add to order</button>`:`<span class="tag">Happy hour</span>`}</div></div></article>`}).join('');
+$('#feat').innerHTML=`<div class="fimg"><img alt="${esc(f[0])}" src="${FIT(f[2],640,f[4],f[5])}" onerror="this.closest('.feat').remove()"></div><div><p class="mono hl">Chef's pick</p><h3 class="disp">${esc(f[0])}</h3><p>${esc(f[1])}</p><div style="margin-top:18px;display:flex;align-items:center;gap:16px"><button class="add gem-cut" data-add="${fi.id}">Add to order</button><span class="price">${money(fi.price)}${fi.g?'+':''}</span></div></div>`;
+$('#cards').innerHTML=PLATES.slice(1).map(p=>{const it=p[3]!=null?ITEMS[ID[p[3]]]:null;return `<article class="card gem-cut"><div class="im"><img loading="lazy" alt="${esc(p[0])}" src="${P(p[2],300,375,p[4])}" onerror="this.closest('.card').remove()"></div><div class="tx"><h3>${esc(p[0])}</h3><p>${esc(p[1])}</p><div class="buy">${it?`<span class="price">${money(it.price)}${it.g?'+':''}</span><button class="add gem-cut sm" data-add="${it.id}">Add to order</button>`:`<span class="tag">Happy hour</span>`}</div></div></article>`}).join('');
 
 /* ---------- MENU ---------- */
 const tabs=$('#tabs'),mb=$('#menuBody');
 function showMenu(n){
   tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===n));
-  mb.innerHTML=MENU[n].map(d=>{const it=ID[d[0]]!==undefined?ITEMS[ID[d[0]]]:null;
-    const right=n==='Bar'?'<span class="tag">Dine-in</span>':it.dineIn?'<span class="tag">Dine-in</span>':`<span class="price">${money(it.price)}</span><button class="add gem-cut sm" data-add="${it.id}">Add</button>`;
-    return `<div class="dish"><h4>${esc(d[0])}</h4><div class="r">${right}</div><p>${esc(d[1])}</p></div>`}).join('');
+  mb.innerHTML=ITEMS.filter(it=>it.cat===n).map(it=>{
+    const right=it.dineIn?'<span class="tag">Dine-in</span>':`<span class="price">${money(it.price)}${it.g?'+':''}</span><button class="add gem-cut sm" data-add="${it.id}">Add</button>`;
+    return `<div class="dish"><h4>${esc(it.name)}</h4><div class="r">${right}</div>${it.desc?`<p>${esc(it.desc)}</p>`:''}</div>`}).join('');
 }
-Object.keys(MENU).forEach(n=>{const b=document.createElement('button');b.className='tab gem-cut sm';b.textContent=n;b.dataset.t=n;b.setAttribute('role','tab');b.onclick=()=>showMenu(n);tabs.appendChild(b)});
-showMenu('Dinner');
+CATS.forEach(n=>{const b=document.createElement('button');b.className='tab gem-cut sm';b.textContent=n==='Shop'?'Shop':n;b.dataset.t=n;b.setAttribute('role','tab');b.onclick=()=>showMenu(n);tabs.appendChild(b)});
+showMenu('Specialties');
 
 /* ---------- THE TABLE: gallery with arrows, drag and swipe ---------- */
 const G=[['85c73b_a9f2c7b1d07c494fb29a58864f7f85a7f003.jpg',368,655],['85c73b_dc37f5d3b9b64ca489c985b65c3e54a4~mv2.jpg',524,655],['85c73b_507ac152d1c147949e39b278360d32fd~mv2.jpg',526,655],['85c73b_10851c09312444a5b07c142bda63938f~mv2.jpg',410,512],['85c73b_b0be161d8a0a40e883428b7bb0baf59f~mv2.jpg',336,418],['85c73b_d1ecfbcfd1154103896a11479a2c8e09~mv2.jpg',336,418],['85c73b_7a05929da8b64bc790eea96ee806a3b8~mv2.jpg',536,670],['85c73b_9a050e60a70640c4917106e3d3dfcbb5~mv2.jpg',503,670],['85c73b_6c8207c9bcdb4105b6d40886ed5cfae5f003.jpg',379,670]];
