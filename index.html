@@ -432,6 +432,21 @@ body.hasCart #cartbar{display:block}
 </section>
 </main>
 
+<section id="join" class="sec" style="padding:56px 0">
+  <div class="wrap" style="max-width:640px">
+    <p class="mono chap">Stay in the loop</p>
+    <h2 class="disp big reveal" style="font-size:clamp(1.8rem,5vw,2.8rem)">Get news from <span class="hl">Bayou</span> Road.</h2>
+    <p class="reveal" style="color:var(--mute);margin:14px 0 20px">Events, new dishes and brunch updates. No spam, unsubscribe any time.</p>
+    <form id="nform" class="reveal" novalidate style="display:flex;flex-wrap:wrap;gap:10px">
+      <label for="nemail" class="sr" style="position:absolute;left:-9999px">Email</label>
+      <input id="nemail" type="email" required autocomplete="email" placeholder="you@email.com" style="flex:1 1 220px">
+      <button class="btn gem-cut" type="submit">Sign me up</button>
+    </form>
+    <p id="nok" role="status" style="display:none;margin-top:12px" class="hl">Thanks! Demo only, nothing was saved or sent.</p>
+    <p style="color:var(--mute);font-size:.8rem;margin-top:10px">Demo sign-up: no email is collected.</p>
+  </div>
+</section>
+
 <footer>
   <div class="wrap row">
     <div style="display:flex;align-items:center;gap:14px">
@@ -639,6 +654,8 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('submit',e=>{
   if(e.target.id==='coForm'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}placeOrder()}
+  if(e.target.id==='nform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#nok').style.display='block';e.target.reset();return}
+  if(e.target.id==='nform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#nok').style.display='block';e.target.reset();return}
   if(e.target.id==='cform'){e.preventDefault();if(!e.target.checkValidity()){e.target.reportValidity();return}$('#cok').style.display='block'}
 });
 
@@ -743,7 +760,10 @@ const heroBg=$('#heroBg');
 let tick=false;addEventListener('scroll',()=>{if(!tick&&!reduce){tick=true;requestAnimationFrame(()=>{heroBg.style.transform=`translate3d(0,${Math.min(scrollY,900)*.18}px,0)`;tick=false})}},{passive:true});
 renderBar();
 /* GOOGLE REVIEWS: paste real reviews here exactly as written: {n:'First L.',r:5,t:'text'} and set RV_SCORE like '4.6 ★ · 500+ Google reviews' */
-const REVIEWS=[];const RV_SCORE='';
+const REVIEWS=[
+ {n:'Halide A.',r:5,t:'I LOVED my experience here. From the food, to the servers (shoutout to Blaze), to the atmosphere! If I ever find myself back in New Orleans, this will be the first restaurant I come back to.'},
+ {n:'Mitchell P.',r:5,t:'Well Well Well! A perfect meal in every way. I had the Snapper, 10/10! We all split Doro Wat platter. 10/10!!! Our server was fantastic. Kind, beautifully prepared to deal with us and attentive. To end the meal we had an affogato which had a homemade coconut milk cinnamon thing going on that elevate…'}
+];const RV_SCORE='4.7 ★ · 1,095 Google reviews';
 (function(){const g=document.getElementById('rvGrid'),sc=document.getElementById('rvScore');if(!g)return;
  sc.textContent=RV_SCORE;
  if(!REVIEWS.length){g.parentNode.removeChild(g);const n=document.querySelector('#reviews .mono:last-child');if(n)n.remove();return}
